@@ -22,8 +22,8 @@ function calculate() {
 
         while (iteration < maxIterations) {
             ({paye, nssf, shif, net: calcNet} = calculateDeductions(gross));
-            if (Math.abs(calcNet - net) < 10) break; // stop when close enough
-            gross += (calcNet < net ? 100 : -50); // adjust guess
+            if (Math.abs(calcNet - net) < 10) break;
+            gross += (calcNet < net ? 100 : -50);
             iteration++;
         }
     }
@@ -40,7 +40,7 @@ function calculate() {
 }
 
 function calculateDeductions(gross) {
-    // --- PAYE bands ---
+    // PAYE bands
     let paye = 0;
     let remaining = gross;
 
@@ -71,21 +71,18 @@ function calculateDeductions(gross) {
     const personalRelief = 2400;
     paye = Math.max(paye - personalRelief, 0);
 
-    // --- NSSF 2026 ---
-    // Tier I: 6% of gross up to max 6,480
+    // NSSF 2026
     let nssf = 0;
     if (gross > 9000) {
-        nssf = gross * 0.06; // employee contribution
-        if (nssf > 6480) nssf = 6480; // cap at 6,480
+        nssf = gross * 0.06;
+        if (nssf > 6480) nssf = 6480;
     }
 
-    // --- SHIF (formerly NHIF) ---
-    let shif = gross * 0.0275; // 2.75%
-    if (shif < 300) shif = 300; // minimum
+    // SHIF
+    let shif = gross * 0.0275;
+    if (shif < 300) shif = 300;
 
-    // --- Net salary ---
     const net = gross - (paye + nssf + shif);
 
     return { paye, nssf, shif, net };
 }
-
