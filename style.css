@@ -6,14 +6,29 @@ body {
     padding: 20px;
 }
 
-/* Center container */
+/* Container */
 .container {
-    max-width: 400px;
+    max-width: 500px;
     margin: auto;
     background-color: #fff;
     padding: 25px 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Navigation bar */
+nav {
+    text-align: center;
+    margin-bottom: 20px;
+}
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #0070f3;
+    font-weight: bold;
+}
+nav a:hover {
+    text-decoration: underline;
 }
 
 /* Title */
@@ -53,7 +68,6 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
-
 button:hover {
     background-color: #005bb5;
 }
@@ -67,7 +81,7 @@ button:hover {
     font-weight: bold;
 }
 
-/* Placeholder for ads */
+/* Ad placeholder */
 .ad-placeholder {
     margin-top: 20px;
     padding: 15px;
@@ -76,4 +90,16 @@ button:hover {
     text-align: center;
     color: #555;
     font-size: 14px;
+}
+
+/* FAQ styling */
+.faq-item {
+    margin-bottom: 15px;
+}
+.faq-item h3 {
+    margin-bottom: 5px;
+    color: #0070f3;
+}
+.faq-item p {
+    margin: 0;
 }
