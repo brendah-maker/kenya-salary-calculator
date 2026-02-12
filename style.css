@@ -31,7 +31,7 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* Title */
+/* Titles */
 h1 {
     text-align: center;
     color: #0070f3;
@@ -46,7 +46,7 @@ label {
     font-weight: bold;
 }
 
-/* Input and select styling */
+/* Inputs and select */
 input, select {
     width: 100%;
     padding: 10px;
@@ -56,7 +56,7 @@ input, select {
     box-sizing: border-box;
 }
 
-/* Button styling */
+/* Buttons */
 button {
     width: 100%;
     padding: 12px;
@@ -72,7 +72,7 @@ button:hover {
     background-color: #005bb5;
 }
 
-/* Results box */
+/* Results */
 #result {
     margin-top: 25px;
     padding: 15px;
