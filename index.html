@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenya Salary Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Kenya Salary Calculator</h1>
+
+        <!-- Mode selection -->
+        <label for="mode">Calculation Mode:</label>
+        <select id="mode">
+            <option value="net">Net Salary (from Gross)</option>
+            <option value="gross">Gross Salary (from Net)</option>
+        </select>
+
+        <!-- Salary input -->
+        <label for="grossSalary">Enter Amount (KES):</label>
+        <input type="number" id="grossSalary" placeholder="e.g., 80000" />
+
+        <!-- Calculate button -->
+        <button onclick="calculate()">Calculate</button>
+
+        <!-- Results -->
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
