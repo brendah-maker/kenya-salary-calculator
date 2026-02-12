@@ -10,11 +10,9 @@ function calculate() {
     let gross, net, paye, nssf, shif;
 
     if (mode === "net") {
-        // Calculate Net Salary (from Gross)
         gross = inputValue;
         ({paye, nssf, shif, net} = calculateDeductions(gross));
     } else {
-        // Estimate Gross Salary (from Net)
         net = inputValue;
         gross = net; // initial guess
         let iteration = 0;
@@ -28,7 +26,6 @@ function calculate() {
         }
     }
 
-    // Display results
     document.getElementById("result").innerHTML = `
         <h2>Results:</h2>
         <p>Gross Salary: KES ${gross.toLocaleString()}</p>
@@ -40,7 +37,6 @@ function calculate() {
 }
 
 function calculateDeductions(gross) {
-    // PAYE bands
     let paye = 0;
     let remaining = gross;
 
@@ -67,18 +63,15 @@ function calculateDeductions(gross) {
         paye += remaining * 0.35;
     }
 
-    // Personal relief
     const personalRelief = 2400;
     paye = Math.max(paye - personalRelief, 0);
 
-    // NSSF 2026
     let nssf = 0;
     if (gross > 9000) {
         nssf = gross * 0.06;
         if (nssf > 6480) nssf = 6480;
     }
 
-    // SHIF
     let shif = gross * 0.0275;
     if (shif < 300) shif = 300;
 
