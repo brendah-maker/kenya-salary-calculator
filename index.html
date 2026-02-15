@@ -6,14 +6,11 @@
 
 <title>Kenya PAYE Calculator 2026 – Net Salary, NSSF, SHIF & Housing Levy</title>
 
-<meta name="description" content="Free Kenya PAYE Calculator 2026. Instantly calculate your net salary, PAYE tax, NSSF, SHIF and Housing Levy using latest KRA tax rates.">
-<meta name="keywords" content="Kenya PAYE Calculator 2026, Kenya salary calculator, PAYE Kenya, KRA tax calculator, NSSF calculator, SHIF calculator">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://kenya-salary-calculator.vercel.app/">
+<meta name="description" content="Free Kenya PAYE Calculator 2026. Calculate your Net Salary, PAYE, NSSF, SHIF and Housing Levy instantly. Updated with latest Kenya tax rates.">
 
 <link rel="stylesheet" href="style.css">
 
-<!-- ✅ Google AdSense AUTO ADS -->
+<!-- Google AdSense -->
 <script async 
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2940888458553903"
     crossorigin="anonymous">
@@ -22,127 +19,67 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Structured Data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Kenya PAYE Calculator 2026",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "All"
-}
-</script>
-
 </head>
 <body>
 
-<header class="site-header">
+<div class="container">
+
+    <nav>
+        <a href="index.html">Home</a> |
+        <a href="about.html">About</a> |
+        <a href="faq.html">FAQ</a>
+    </nav>
+
     <h1>Kenya PAYE Calculator 2026</h1>
-    <p>Calculate Net Salary, PAYE, NSSF, SHIF & Housing Levy Instantly</p>
-</header>
+    <p class="intro-text">
+        Calculate your Net Salary, PAYE, NSSF, SHIF, and Housing Levy instantly.
+    </p>
 
-<nav class="navbar">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="faq.html">FAQ</a>
-    <a href="privacy.html">Privacy Policy</a>
-</nav>
+    <!-- 🔹 Top Ad Unit -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2940888458553903"
+             data-ad-slot="YOUR_AD_SLOT_ID"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
 
-<main class="container">
+    <label for="mode">Calculation Mode:</label>
+    <select id="mode">
+        <option value="net">Net Salary</option>
+        <option value="gross">Gross Salary</option>
+    </select>
 
-    <!-- ========================= -->
-    <!-- 1️⃣ CALCULATOR SECTION -->
-    <!-- ========================= -->
-    <section class="calculator-section">
+    <label for="grossSalary">Enter Amount (KES):</label>
+    <input type="number" id="grossSalary" placeholder="e.g., 50000" />
 
-        <h2>Salary Calculator</h2>
+    <label for="grossSalary2">Compare With Another Salary (Optional, KES):</label>
+    <input type="number" id="grossSalary2" placeholder="e.g., 60000" />
 
-        <label for="mode">Calculation Mode</label>
-        <select id="mode">
-            <option value="net">Net Salary</option>
-            <option value="gross">Gross Salary</option>
-        </select>
+    <button onclick="calculate()">Calculate</button>
 
-        <label for="grossSalary">Enter Amount (KES)</label>
-        <input type="number" id="grossSalary" placeholder="e.g., 50000">
+    <div id="result"></div>
 
-        <label for="grossSalary2">Compare With Another Salary (Optional)</label>
-        <input type="number" id="grossSalary2" placeholder="e.g., 60000">
+    <canvas id="salaryChart" width="400" height="400"></canvas>
 
-        <button onclick="calculate()">Calculate</button>
+    <!-- 🔹 Bottom Ad Unit -->
+    <div class="ad-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-2940888458553903"
+             data-ad-slot="YOUR_AD_SLOT_ID"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
 
-    </section>
+</div>
 
-    <!-- ========================= -->
-    <!-- 2️⃣ RESULTS SECTION -->
-    <!-- ========================= -->
-    <section class="results-section">
-        <h2>Your Salary Breakdown</h2>
-        <div id="result"></div>
-    </section>
-
-    <!-- ========================= -->
-    <!-- 3️⃣ CHART SECTION -->
-    <!-- ========================= -->
-    <section class="chart-section">
-        <h2>Salary Distribution Chart</h2>
-        <canvas id="salaryChart"></canvas>
-    </section>
-
-    <!-- ========================= -->
-    <!-- 4️⃣ EDUCATIONAL SECTION -->
-    <!-- ========================= -->
-    <section class="education-section">
-
-        <h2>How PAYE is Calculated in Kenya (2026)</h2>
-
-        <p>
-        PAYE (Pay As You Earn) is income tax deducted from employees' salaries
-        based on progressive tax bands set by the Kenya Revenue Authority (KRA).
-        The higher your income, the higher the tax band applied.
-        </p>
-
-        <h3>Key Salary Deductions in 2026</h3>
-        <ul>
-            <li><strong>PAYE Tax:</strong> Calculated using official KRA income tax bands.</li>
-            <li><strong>NSSF:</strong> Mandatory pension contribution for retirement savings.</li>
-            <li><strong>SHIF:</strong> Social Health Insurance Fund deduction.</li>
-            <li><strong>Housing Levy:</strong> Affordable housing contribution percentage.</li>
-        </ul>
-
-        <p>
-        This Kenya PAYE Calculator 2026 helps employees estimate take-home pay
-        after all statutory deductions are applied.
-        </p>
-
-    </section>
-
-    <!-- ========================= -->
-    <!-- SEO BOOST SECTION -->
-    <!-- ========================= -->
-    <section class="seo-content">
-
-        <h2>Why Use This Kenya PAYE Calculator?</h2>
-
-        <p>
-        This free Kenya PAYE Calculator 2026 is designed for Kenyan employees,
-        HR professionals, and employers who want quick and accurate salary
-        calculations using the latest tax rates.
-        </p>
-
-        <p>
-        Whether you want to compare job offers, plan your monthly budget,
-        or understand your payslip better, this tool provides an instant
-        breakdown of deductions including PAYE, NSSF, SHIF, and Housing Levy.
-        </p>
-
-    </section>
-
-</main>
-
-<footer class="site-footer">
-    <p>© 2026 Kenya Salary Calculator | For informational purposes only.</p>
-</footer>
+<!-- Initialize Ads -->
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 <script src="script.js"></script>
 
