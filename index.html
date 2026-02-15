@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PAYE Calculator – Home</title>
-<meta name="description" content="Kenya PAYE Calculator – Calculate your Net Salary, PAYE, NSSF, and SHIF deductions (2026 rates) quickly and easily.">
-<meta name="keywords" content="Kenya paye calculator, PAYE, NSSF, SHIF, net salary, gross salary, PAYE calculator, SHA calculator">
-
+<title>PAYE Calculator – Kenya 2026</title>
+<meta name="description" content="Kenya PAYE Calculator – Calculate Net Salary, PAYE, NSSF, SHIF deductions (2026 rates).">
 <link rel="stylesheet" href="style.css">
 
-<!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2940888458553903"
-     crossorigin="anonymous"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 <div class="container">
@@ -21,12 +19,11 @@
         <a href="faq.html">FAQ</a>
     </nav>
 
-    <h1>PAYE Calculator</h1>
+    <h1>Kenya PAYE Calculator</h1>
 
-   <p class="intro-text">
-Free Kenya PAYE Calculator 2026. Instantly calculate your net salary, PAYE, NSSF, and SHIF deductions.
-</p>
-
+    <p class="intro-text">
+        Instantly calculate your Net Salary, PAYE, NSSF, SHIF, and Housing Levy for 2025 & 2026.
+    </p>
 
     <label for="mode">Calculation Mode:</label>
     <select id="mode">
@@ -37,28 +34,20 @@ Free Kenya PAYE Calculator 2026. Instantly calculate your net salary, PAYE, NSSF
     <label for="grossSalary">Enter Amount (KES):</label>
     <input type="number" id="grossSalary" placeholder="e.g., 50000" />
 
+    <label for="yearToggle">Select Year:</label>
+    <select id="yearToggle">
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+    </select>
+
     <button onclick="calculate()">Calculate</button>
 
     <div id="result"></div>
 
-    <!-- Ad placeholder -->
-    <div class="ad-placeholder">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-2940888458553903"
-             data-ad-slot="1234567890"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
+    <!-- Chart Placeholder -->
+    <canvas id="salaryChart" width="400" height="400"></canvas>
 </div>
 
 <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
