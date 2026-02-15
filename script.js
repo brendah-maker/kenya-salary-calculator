@@ -1,5 +1,5 @@
 // ===============================
-// Kenya PAYE Calculator 2026 – Value-added Version
+// Kenya PAYE Calculator 2026 – Full Version
 // ===============================
 
 function calculate() {
@@ -12,7 +12,9 @@ function calculate() {
         return;
     }
 
-    // Calculate primary salary
+    // --------------------------
+    // Primary salary calculation
+    // --------------------------
     let gross, net, paye, nssf, shif, housingLevy;
     if (mode === "gross") {
         gross = input;
@@ -26,9 +28,12 @@ function calculate() {
     // Display primary result
     displayResults(gross, paye, nssf, shif, housingLevy, net);
 
-    // If comparison salary provided
+    // --------------------------
+    // Comparison salary
+    // --------------------------
     if (!isNaN(input2) && input2 > 0) {
         let gross2, net2, paye2, nssf2, shif2, housingLevy2;
+
         if (mode === "gross") {
             gross2 = input2;
             ({ paye: paye2, nssf: nssf2, shif: shif2, housingLevy: housingLevy2, net: net2 } = calculateDeductions(gross2));
@@ -37,12 +42,18 @@ function calculate() {
             gross2 = estimateGrossFromNet(net2);
             ({ paye: paye2, nssf: nssf2, shif: shif2, housingLevy: housingLevy2, net: net2 } = calculateDeductions(gross2));
         }
+
+        // Display numeric comparison
+        displayComparison(gross, net, gross2, net2);
+
+        // Render comparison chart
         renderComparisonChart(
             [paye, nssf, shif, housingLevy, net],
             [paye2, nssf2, shif2, housingLevy2, net2],
             [gross, gross2]
         );
     } else {
+        // Single salary chart
         renderChart(paye, nssf, shif, housingLevy, net);
     }
 }
@@ -51,7 +62,7 @@ function calculate() {
 // Calculate Deductions
 // ===============================
 function calculateDeductions(gross) {
-    // NSSF 6%
+    // NSSF 6% capped
     let nssf = gross * 0.06;
     if (nssf > 6480) nssf = 6480;
     if (gross < 9000) nssf = gross * 0.06;
@@ -63,7 +74,7 @@ function calculateDeductions(gross) {
     // Housing Levy 1.5%
     let housingLevy = gross * 0.015;
 
-    // Taxable Income
+    // Taxable income for PAYE
     const taxableIncome = gross - nssf - shif - housingLevy;
 
     // PAYE bands
@@ -134,11 +145,24 @@ function displayResults(gross, paye, nssf, shif, housingLevy, net) {
         <div class="result-row"><span>SHIF:</span><span>KES ${shif.toLocaleString()}</span></div>
         <div class="result-row"><span>Housing Levy:</span><span>KES ${housingLevy.toLocaleString()}</span></div>
         <div class="result-row"><strong>Net Salary:</strong><strong>KES ${net.toLocaleString()}</strong></div>
-
         <div class="result-row"><span>Take-home %:</span><span>${takeHomePercent}%</span></div>
         <div class="result-row"><span>Deductions %:</span><span>${deductionPercent}%</span></div>
         <div class="result-row"><span>Annual Net Salary:</span><span>KES ${(net*12).toLocaleString()}</span></div>
         <div class="result-row"><span>Total Annual Deductions:</span><span>KES ${(deductions*12).toLocaleString()}</span></div>
+    `;
+}
+
+// ===============================
+// Display numeric comparison
+// ===============================
+function displayComparison(gross1, net1, gross2, net2) {
+    const compDiv = document.getElementById("result");
+    compDiv.innerHTML += `
+        <h3>Salary Comparison</h3>
+        <div class="result-row"><span>Gross Salary 1:</span><span>KES ${gross1.toLocaleString()}</span></div>
+        <div class="result-row"><span>Net Salary 1:</span><span>KES ${net1.toLocaleString()}</span></div>
+        <div class="result-row"><span>Gross Salary 2:</span><span>KES ${gross2.toLocaleString()}</span></div>
+        <div class="result-row"><span>Net Salary 2:</span><span>KES ${net2.toLocaleString()}</span></div>
     `;
 }
 
@@ -191,7 +215,8 @@ function renderComparisonChart(data1, data2, grossArr) {
         },
         options: {
             responsive: true,
-            plugins: { legend: { position: 'bottom' } }
+            plugins: { legend: { position: 'bottom' } },
+            scales: { y: { beginAtZero: true } }
         }
     });
 }
