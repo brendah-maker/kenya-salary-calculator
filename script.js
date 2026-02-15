@@ -1,5 +1,5 @@
 // ===============================
-// Kenya PAYE Calculator 2026 – Full Version
+// Kenya PAYE Calculator 2026 – Stacked Bar Comparison
 // ===============================
 
 function calculate() {
@@ -13,7 +13,7 @@ function calculate() {
     }
 
     // --------------------------
-    // Primary salary calculation
+    // Primary salary
     // --------------------------
     let gross, net, paye, nssf, shif, housingLevy;
     if (mode === "gross") {
@@ -25,7 +25,6 @@ function calculate() {
         ({ paye, nssf, shif, housingLevy, net } = calculateDeductions(gross));
     }
 
-    // Display primary result
     displayResults(gross, paye, nssf, shif, housingLevy, net);
 
     // --------------------------
@@ -33,7 +32,6 @@ function calculate() {
     // --------------------------
     if (!isNaN(input2) && input2 > 0) {
         let gross2, net2, paye2, nssf2, shif2, housingLevy2;
-
         if (mode === "gross") {
             gross2 = input2;
             ({ paye: paye2, nssf: nssf2, shif: shif2, housingLevy: housingLevy2, net: net2 } = calculateDeductions(gross2));
@@ -43,17 +41,14 @@ function calculate() {
             ({ paye: paye2, nssf: nssf2, shif: shif2, housingLevy: housingLevy2, net: net2 } = calculateDeductions(gross2));
         }
 
-        // Display numeric comparison
         displayComparison(gross, net, gross2, net2);
 
-        // Render comparison chart
-        renderComparisonChart(
+        renderStackedComparison(
             [paye, nssf, shif, housingLevy, net],
             [paye2, nssf2, shif2, housingLevy2, net2],
             [gross, gross2]
         );
     } else {
-        // Single salary chart
         renderChart(paye, nssf, shif, housingLevy, net);
     }
 }
@@ -62,22 +57,17 @@ function calculate() {
 // Calculate Deductions
 // ===============================
 function calculateDeductions(gross) {
-    // NSSF 6% capped
     let nssf = gross * 0.06;
     if (nssf > 6480) nssf = 6480;
     if (gross < 9000) nssf = gross * 0.06;
 
-    // SHIF 2.75% min 300
     let shif = gross * 0.0275;
     if (shif < 300) shif = 300;
 
-    // Housing Levy 1.5%
     let housingLevy = gross * 0.015;
 
-    // Taxable income for PAYE
     const taxableIncome = gross - nssf - shif - housingLevy;
 
-    // PAYE bands
     const bands = [
         { upper: 24000, rate: 0.10 },
         { upper: 32333, rate: 0.25 },
@@ -130,7 +120,7 @@ function estimateGrossFromNet(targetNet) {
 }
 
 // ===============================
-// Display Results with Take-home % & Annual Projection
+// Display Results
 // ===============================
 function displayResults(gross, paye, nssf, shif, housingLevy, net) {
     const deductions = paye + nssf + shif + housingLevy;
@@ -167,7 +157,7 @@ function displayComparison(gross1, net1, gross2, net2) {
 }
 
 // ===============================
-// Render Single Donut Chart
+// Single Donut Chart
 // ===============================
 function renderChart(paye, nssf, shif, housingLevy, net) {
     const ctx = document.getElementById('salaryChart').getContext('2d');
@@ -190,9 +180,9 @@ function renderChart(paye, nssf, shif, housingLevy, net) {
 }
 
 // ===============================
-// Render Comparison Chart
+// Stacked Bar Comparison Chart
 // ===============================
-function renderComparisonChart(data1, data2, grossArr) {
+function renderStackedComparison(data1, data2, grossArr) {
     const ctx = document.getElementById('salaryChart').getContext('2d');
     if (window.salaryChart) window.salaryChart.destroy();
 
@@ -204,19 +194,37 @@ function renderComparisonChart(data1, data2, grossArr) {
                 {
                     label: `KES ${grossArr[0].toLocaleString()}`,
                     data: data1,
-                    backgroundColor: '#36A2EB'
+                    backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD']
                 },
                 {
                     label: `KES ${grossArr[1].toLocaleString()}`,
                     data: data2,
-                    backgroundColor: '#FF6384'
+                    backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'].map(c => lightenColor(c, 0.5))
                 }
             ]
         },
         options: {
             responsive: true,
             plugins: { legend: { position: 'bottom' } },
-            scales: { y: { beginAtZero: true } }
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
         }
     });
+}
+
+// Helper to lighten colors for second dataset
+function lightenColor(color, percent) {
+    const num = parseInt(color.replace('#',''),16),
+          amt = Math.round(2.55 * percent * 100),
+          R = (num >> 16) + amt,
+          G = (num >> 8 & 0x00FF) + amt,
+          B = (num & 0x0000FF) + amt;
+    return '#' + (
+      0x1000000 + 
+      (R<255?R<1?0:R:255)*0x10000 + 
+      (G<255?G<1?0:G:255)*0x100 + 
+      (B<255?B<1?0:B:255)
+    ).toString(16).slice(1);
 }
