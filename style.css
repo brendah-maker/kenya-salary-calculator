@@ -43,7 +43,7 @@ button:hover { background-color: #1558c0; }
 
 /* Results Box */
 #result { margin-top: 30px; padding: 20px; border-radius: 10px; background: #f7faff; border: 1px solid #dce6f9; }
-#result h2 { font-size: 18px; margin-bottom: 12px; color: #1a73e8; }
+#result h2, #result h3 { font-size: 18px; margin-bottom: 12px; color: #1a73e8; }
 .result-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
 .result-row strong { font-size: 16px; }
 
