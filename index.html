@@ -3,45 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PAYE Calculator – Kenya 2026</title>
+<title>Kenya PAYE Calculator 2026 – Net Salary, NSSF, SHIF & Housing Levy</title>
+<meta name="description" content="Free Kenya PAYE Calculator 2026. Calculate your net salary, PAYE tax, NSSF, SHIF (SHA), and Housing Levy instantly.">
+
 <link rel="stylesheet" href="style.css">
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2940888458553903" crossorigin="anonymous"></script>
 </head>
 <body>
+
 <div class="container">
-    <nav>
-        <a href="index.html">Home</a> |
-        <a href="about.html">About</a> |
-        <a href="faq.html">FAQ</a>
-    </nav>
 
-    <h1>Kenya PAYE Calculator 2026</h1>
-    <p class="intro-text">
-        Calculate your Net Salary, PAYE, NSSF, SHIF, and Housing Levy.
-    </p>
+<nav>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="faq.html">FAQ</a>
+</nav>
 
-    <label for="mode">Calculation Mode:</label>
-    <select id="mode">
-        <option value="net">Net Salary</option>
-        <option value="gross">Gross Salary</option>
-    </select>
+<h1>Kenya PAYE Calculator 2026</h1>
+<p class="intro-text">
+Calculate your Net Salary, PAYE, NSSF, SHIF (SHA), and Housing Levy instantly.
+</p>
 
-    <label for="grossSalary">Enter Amount (KES):</label>
-    <input type="number" id="grossSalary" placeholder="e.g., 50000" />
+<!-- Calculator Section -->
+<section class="calculator-section">
 
-    <label for="grossSalary2">Compare With Another Salary (Optional, KES):</label>
-    <input type="number" id="grossSalary2" placeholder="e.g., 60000" />
+<label>Calculation Mode</label>
+<select id="mode">
+<option value="net">Net Salary</option>
+<option value="gross">Gross Salary</option>
+</select>
 
-    <button onclick="calculate()">Calculate</button>
+<label>Enter Amount (KES)</label>
+<input type="number" id="grossSalary" placeholder="e.g. 50000">
 
-    <div id="result"></div>
+<label>Compare With Another Salary (Optional)</label>
+<input type="number" id="grossSalary2" placeholder="e.g. 60000">
 
-    <canvas id="salaryChart" width="400" height="400"></canvas>
+<button onclick="calculate()">Calculate Salary</button>
+
+<div id="result"></div>
+<canvas id="salaryChart"></canvas>
+
+</section>
+
+<hr class="divider">
+
+<!-- Educational Content Section -->
+<section class="info-section">
+<h2>Understanding Salary Deductions in Kenya</h2>
+
+<p>
+When you earn a salary in Kenya, several statutory deductions apply before you receive your net pay.
+These include PAYE (income tax), NSSF pension contribution, SHIF/SHA health insurance,
+and the Housing Levy. Understanding how these are calculated helps you plan your finances better.
+</p>
+
+<div class="accordion">
+
+<button class="accordion-btn">PAYE (Pay As You Earn)</button>
+<div class="accordion-content">
+<p>
+PAYE is a progressive income tax deducted by employers.
+Higher income bands are taxed at higher rates.
+After calculating tax using tax bands, a monthly personal relief of KES 2,400 is deducted.
+</p>
+</div>
+
+<button class="accordion-btn">NSSF Contribution</button>
+<div class="accordion-content">
+<p>
+NSSF is a mandatory pension scheme.
+Employees contribute 6% of pensionable income (capped).
+Employers match the contribution.
+This helps provide retirement benefits.
+</p>
+</div>
+
+<button class="accordion-btn">SHIF / SHA (Health Insurance)</button>
+<div class="accordion-content">
+<p>
+SHIF (Social Health Insurance Fund) replaced NHIF.
+Employees contribute 2.75% of gross salary,
+with a minimum contribution threshold.
+Funds support universal healthcare services.
+</p>
+</div>
+
+<button class="accordion-btn">Housing Levy</button>
+<div class="accordion-content">
+<p>
+The Housing Levy is 1.5% of gross salary.
+Employers match the employee’s contribution.
+Funds are used to support Kenya’s affordable housing initiative.
+</p>
+</div>
+
+</div>
+</section>
+
+<section class="tax-section">
+<h2>Kenya PAYE Tax Bands 2026</h2>
+<div class="tax-bands">
+<p>First KES 24,000 – 10%</p>
+<p>KES 24,001 – 32,333 – 25%</p>
+<p>KES 32,334 – 47,667 – 30%</p>
+<p>KES 47,668 – 100,000 – 32.5%</p>
+<p>Above KES 100,000 – 35%</p>
+<p><strong>Personal Relief: KES 2,400 per month</strong></p>
+</div>
+</section>
+
+<section class="faq-preview">
+<h2>Frequently Asked Questions</h2>
+
+<p><strong>How is net salary calculated?</strong><br>
+Net salary = Gross salary minus PAYE, NSSF, SHIF, and Housing Levy.</p>
+
+<p><strong>Does this calculator use 2026 tax rates?</strong><br>
+Yes, it reflects the current Kenya payroll structure.</p>
+
+<p><strong>Can employers use this tool?</strong><br>
+Yes, it helps estimate payroll and compare salary structures.</p>
+
+<a href="faq.html" class="faq-link">View All FAQs →</a>
+</section>
+
 </div>
 
 <script src="script.js"></script>
