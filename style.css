@@ -94,11 +94,11 @@ font-size: 14px;
 }
 
 canvas {
-margin-top: 20px;
+    margin-top: 15px;
 }
 
 .divider {
-margin: 40px 0;
+    margin: 25px 0 20px 0;
 }
 
 /* Info Sections */
@@ -152,3 +152,4 @@ text-decoration: none;
 padding: 20px;
 }
 }
+
