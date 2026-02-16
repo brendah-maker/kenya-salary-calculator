@@ -228,3 +228,13 @@ function lightenColor(color, percent) {
       (B<255?B<1?0:B:255)
     ).toString(16).slice(1);
 }
+// Accordion Toggle
+document.querySelectorAll(".accordion-btn").forEach(btn => {
+btn.addEventListener("click", function() {
+const content = this.nextElementSibling;
+content.style.display =
+content.style.display === "block" ? "none" : "block";
+});
+});
+
+
