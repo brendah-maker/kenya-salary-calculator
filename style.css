@@ -166,5 +166,17 @@ padding: 20px;
 }
 }
 
+.legal-section h2 {
+margin-top: 20px;
+color: #1a73e8;
+}
+
+.legal-section p {
+margin-top: 8px;
+line-height: 1.7;
+font-size: 14px;
+}
+
+
 
 
