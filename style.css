@@ -15,7 +15,7 @@ body {
 }
 
 h1, h2, h3 {
-    color: #1a73e8;
+    color: white;
 }
 
 /* ===============================
@@ -229,3 +229,4 @@ canvas {
         font-size: 15px;
     }
 }
+
