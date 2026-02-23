@@ -1,4 +1,6 @@
-/* Reset and global styles */
+/* ========================
+   Global Reset & Typography
+======================== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,12 +9,14 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
-    background: linear-gradient(135deg, #eef2f7, #d9e4f5);
+    background: #f5f7fb;
     color: #333;
     line-height: 1.6;
 }
 
-/* Header */
+/* ========================
+   Header
+======================== */
 header {
     text-align: center;
     padding: 60px 10%;
@@ -27,10 +31,11 @@ header h1 {
 
 header p {
     font-size: 16px;
-    margin-top: 5px;
 }
 
-/* Navigation */
+/* ========================
+   Navigation
+======================== */
 nav {
     width: 100%;
     background: #1e293b;
@@ -51,21 +56,34 @@ nav a:hover {
     color: #fbbf24;
 }
 
-/* Main sections */
-section {
-    width: 100%;
+/* ========================
+   Main Grid Layout
+======================== */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Left-info / Right-calculator */
+    gap: 40px;
     padding: 60px 10%;
 }
 
-/* Calculator section */
-.calculator-section {
+/* Left Information Section */
+.info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Right Calculator Section */
+.calculator-right {
     background: #ffffff;
     border-radius: 12px;
     padding: 40px 30px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    margin-bottom: 60px;
 }
 
+/* ========================
+   Form Elements
+======================== */
 label {
     display: block;
     margin-top: 15px;
@@ -100,6 +118,9 @@ button:hover {
     background: #1e40af;
 }
 
+/* ========================
+   Results
+======================== */
 #result {
     margin-top: 25px;
     padding: 20px;
@@ -119,19 +140,13 @@ canvas {
     margin-top: 20px;
 }
 
-/* Divider */
-.divider {
-    height: 2px;
-    background: #e2e8f0;
-    margin: 60px 0;
-}
-
-/* Info sections */
+/* ========================
+   Info Sections & Accordions
+======================== */
 .info-section, .tax-section, .faq-preview {
-    margin-bottom: 60px;
+    background: #ffffff;
     padding: 30px;
     border-radius: 12px;
-    background: #ffffff;
     box-shadow: 0 8px 20px rgba(0,0,0,0.05);
 }
 
@@ -193,7 +208,37 @@ canvas {
     color: #1e40af;
 }
 
-/* Footer */
+/* ========================
+   Tool Links / Buttons
+======================== */
+a.tool-link {
+    display: inline-block;
+    margin-top: 20px;
+    background: #f97316;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a.tool-link:hover {
+    background: #ea580c;
+}
+
+/* ========================
+   Divider
+======================== */
+.divider {
+    height: 2px;
+    background: #e2e8f0;
+    margin: 60px 0;
+}
+
+/* ========================
+   Footer
+======================== */
 footer {
     text-align: center;
     padding: 40px 10%;
@@ -212,42 +257,27 @@ footer a:hover {
     text-decoration: underline;
 }
 
-/* SHIF button / tool links */
-a.tool-link {
-    display: inline-block;
-    margin-top: 20px;
-    background: #f97316;
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-a.tool-link:hover {
-    background: #ea580c;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 28px;
+/* ========================
+   Responsive Adjustments
+======================== */
+@media (max-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr; /* stack on tablets */
+        gap: 40px;
     }
-
-    section {
-        padding: 40px 8%;
-    }
-
-    button, input, select {
-        font-size: 15px;
-        padding: 12px;
+    
+    .calculator-right {
+        margin-top: 30px;
     }
 }
 
 @media (max-width: 480px) {
     header h1 {
         font-size: 24px;
+    }
+
+    header p {
+        font-size: 14px;
     }
 
     nav a {
