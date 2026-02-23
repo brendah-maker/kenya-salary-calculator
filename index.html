@@ -3,52 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kenya Financial Tools Hub | PAYE, SHIF & More</title>
-<meta name="description" content="Kenya Financial Tools Hub - Access PAYE, SHIF, Housing Levy calculators and other payroll tools all in one place.">
-<meta name="keywords" content="Kenya PAYE calculator, SHIF calculator, Housing Levy, salary deductions, net salary, payroll tools">
+<title>Kenya Financial Tools Hub | PAYE, SHIF, VAT & More</title>
 <link rel="stylesheet" href="style.css">
-
-<!-- Google AdSense -->
-<meta name="google-adsense-account" content="ca-pub-2940888458553903">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2940888458553903" crossorigin="anonymous"></script>
-
-<!-- Vercel Analytics -->
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-<!-- ================= HEADER ================= -->
 <header>
     <h1>Kenya Financial Tools Hub</h1>
-    <p>Access PAYE, SHIF, Housing Levy calculators and other payroll tools in one place.</p>
+    <p>Access PAYE, SHIF, Housing Levy, VAT calculators and other payroll tools in one place.</p>
 </header>
 
-<!-- ================= NAVIGATION ================= -->
 <nav>
     <a href="index.html">Home</a>
-    <a href="calculator.html">Calculator</a>
-    <a href="about.html">About</a>
-    <a href="faq.html">FAQ</a>
-    <a href="privacy.html">Privacy</a>
 </nav>
 
-<!-- ================= MAIN GRID ================= -->
 <div class="main-grid">
 
     <!-- LEFT INFO COLUMN -->
     <div class="info-left">
-
-        <!-- Introduction Section -->
         <section class="info-section">
             <h2>About Kenya Payroll Deductions</h2>
-            <p>Kenyan employees have several statutory deductions from their salary, including PAYE (income tax), NSSF, SHIF, and Housing Levy. Understanding these helps you plan your finances effectively.</p>
+            <p>Kenyan employees have several statutory deductions from their salary, including PAYE, NSSF, SHIF, and Housing Levy. Understanding these helps you plan your finances effectively.</p>
         </section>
 
-        <!-- Tax Bands Section -->
         <section class="tax-section">
             <h2>Kenya PAYE Tax Bands 2026</h2>
             <div class="tax-bands">
@@ -61,106 +39,77 @@
             </div>
         </section>
 
-        <!-- Accordion for More Info -->
-        <section class="faq-preview">
-            <h2>Understanding Deductions</h2>
-
-            <button class="accordion-btn">PAYE (Pay As You Earn)</button>
-            <div class="accordion-content">
-                <p>PAYE is a progressive income tax deducted by employers. Higher income bands are taxed at higher rates. A monthly personal relief of KES 2,400 is deducted after calculation.</p>
-            </div>
-
-            <button class="accordion-btn">NSSF Contribution</button>
-            <div class="accordion-content">
-                <p>NSSF is a mandatory pension scheme. Employees contribute 6% of pensionable income (capped), and employers match it.</p>
-            </div>
-
-            <button class="accordion-btn">SHIF / SHA (Health Insurance)</button>
-            <div class="accordion-content">
-                <p>SHIF (Social Health Insurance Fund) replaced NHIF. Employees contribute 2.75% of gross salary with a minimum threshold. Funds support universal healthcare services.</p>
-            </div>
-
-            <button class="accordion-btn">Housing Levy</button>
-            <div class="accordion-content">
-                <p>The Housing Levy is 1.5% of gross salary. Employers match the employee’s contribution to support affordable housing initiatives.</p>
-            </div>
-
-            <a href="faq.html" class="faq-link">View All FAQs →</a>
+        <section class="info-section">
+            <h2>SHIF Key Details</h2>
+            <ul>
+                <li>Mandatory for all Kenyan residents (employed and self-employed)</li>
+                <li>Minimum contribution: KES 300 per month</li>
+                <li>Tax Relief: 15% tax relief on SHIF contribution</li>
+                <li>Employers must remit deductions by the 9th of the following month</li>
+            </ul>
         </section>
 
+        <section class="info-section">
+            <h2>VAT Calculator</h2>
+            <p>Calculate VAT at the standard rate of 16%, including or excluding VAT from amounts.</p>
+        </section>
     </div>
 
     <!-- RIGHT CALCULATOR COLUMN -->
     <div class="calculator-right">
-
-        <h2>Payroll Calculator</h2>
-        <p>Use this calculator to estimate your salary deductions. You can select which tool to use (e.g., PAYE, SHIF, Housing Levy).</p>
+        <h2>Financial Calculators</h2>
 
         <label for="mode">Select Calculator</label>
-        <select id="mode">
+        <select id="mode" onchange="switchCalculator()">
             <option value="paye">PAYE Calculator</option>
             <option value="shif">SHIF Calculator</option>
-            <option value="housing">Housing Levy Calculator</option>
+            <option value="vat">VAT Calculator</option>
         </select>
 
-        <label for="salary">Enter Gross Salary (KES)</label>
-        <input type="number" id="salary" placeholder="e.g. 50000">
+        <!-- PAYE Calculator Inputs -->
+        <div id="payeCalc">
+            <label>Calculation Mode</label>
+            <select id="calcMode">
+                <option value="net">Net Salary</option>
+                <option value="gross">Gross Salary</option>
+            </select>
 
-        <button onclick="calculate()">Calculate</button>
+            <label>Enter Salary (KES)</label>
+            <input type="number" id="grossSalary" placeholder="e.g. 50000">
 
-        <div id="result">
-            <!-- Calculation results will appear here -->
+            <label>Compare with another salary (Optional)</label>
+            <input type="number" id="grossSalary2" placeholder="e.g. 60000">
+
+            <button onclick="calculatePAYE()">Calculate PAYE</button>
         </div>
 
-        <div style="text-align:center; margin-top:20px;">
-            <a href="index.html" class="tool-link">Back to Home</a>
+        <!-- SHIF Calculator Inputs -->
+        <div id="shifCalc" style="display:none;">
+            <label>Gross Monthly Salary (KES)</label>
+            <input type="number" id="shifSalary" placeholder="e.g. 50000">
+            <button onclick="calculateSHIF()">Calculate SHIF</button>
         </div>
+
+        <!-- VAT Calculator Inputs -->
+        <div id="vatCalc" style="display:none;">
+            <label>Amount (KES)</label>
+            <input type="number" id="vatAmount" placeholder="Enter amount">
+            <label>Mode</label>
+            <select id="vatMode">
+                <option value="add">Add 16% VAT</option>
+                <option value="remove">Remove 16% VAT</option>
+            </select>
+            <button onclick="calculateVAT()">Calculate VAT</button>
+        </div>
+
+        <div id="result" style="margin-top:20px;"></div>
+        <canvas id="salaryChart"></canvas>
 
     </div>
 
 </div>
 
-<!-- ================= FOOTER ================= -->
-<footer>
-    <p>&copy; 2026 Kenya Financial Tools Hub</p>
-    <a href="about.html">About</a> | 
-    <a href="privacy.html">Privacy Policy</a>
-</footer>
-
-<!-- ================= ACCORDION SCRIPT ================= -->
-<script>
-const accordions = document.querySelectorAll('.accordion-btn');
-accordions.forEach(btn => {
-    btn.addEventListener('click', () => {
-        btn.classList.toggle('active');
-        const content = btn.nextElementSibling;
-        if(content.style.display === "block"){
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-    });
-});
-
-// Placeholder calculation function
-function calculate(){
-    const mode = document.getElementById('mode').value;
-    const salary = parseFloat(document.getElementById('salary').value);
-    if(!salary || salary <= 0){
-        alert("Please enter a valid salary.");
-        return;
-    }
-    let resultText = "";
-    if(mode === "paye"){
-        resultText = `Estimated PAYE: KES ${(salary * 0.1).toFixed(2)} (example)`;
-    } else if(mode === "shif"){
-        resultText = `Estimated SHIF: KES ${(salary * 0.0275).toFixed(2)}`;
-    } else if(mode === "housing"){
-        resultText = `Estimated Housing Levy: KES ${(salary * 0.015).toFixed(2)}`;
-    }
-    document.getElementById('result').innerText = resultText;
-}
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
