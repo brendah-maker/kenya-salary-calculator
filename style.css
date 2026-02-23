@@ -18,36 +18,49 @@ h1, h2, h3 {
     color: #1a73e8;
 }
 
+/* ===============================
+   HEADER
+   =============================== */
 header {
-    text-align: center;
-    padding: 30px 20px 15px 20px;
+    margin-bottom: 20px;
 }
 
-header p {
-    margin-top: 8px;
-    color: #555;
-    font-size: 14px;
+.header-top {
+    background: #1a73e8;
+    color: white;
+    text-align: center;
+    padding: 30px 20px 20px 20px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.header-top p {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #e0ebff;
 }
 
 /* ===============================
    NAVIGATION
    =============================== */
 nav {
+    background: #111;
     text-align: center;
+    padding: 12px 0;
     margin-bottom: 30px;
 }
 
 nav a {
     margin: 0 15px;
     text-decoration: none;
-    color: #1a73e8;
+    color: #fff;
     font-weight: 600;
     font-size: 14px;
     transition: color 0.2s ease;
 }
 
 nav a:hover {
-    color: #1558c0;
+    color: #1a73e8;
 }
 
 /* ===============================
@@ -172,6 +185,7 @@ nav a:hover {
     background: #f7faff;
     padding: 15px;
     border-radius: 8px;
+    font-weight: 600;
 }
 
 .positive p {
