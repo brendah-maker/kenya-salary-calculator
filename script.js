@@ -1,22 +1,28 @@
 // ===============================
-// Kenya PAYE Calculator 2026 – Stacked Bar Comparison
+// Switch between calculators
 // ===============================
-
-function calculate() {
+function switchCalculator() {
     const mode = document.getElementById("mode").value;
+    document.getElementById("payeCalc").style.display = mode === "paye" ? "block" : "none";
+    document.getElementById("shifCalc").style.display = mode === "shif" ? "block" : "none";
+    document.getElementById("vatCalc").style.display = mode === "vat" ? "block" : "none";
+    document.getElementById("result").innerHTML = "";
+    if (window.salaryChart) window.salaryChart.destroy();
+}
+
+// ===============================
+// PAYE Calculator
+// ===============================
+function calculatePAYE() {
+    const calcMode = document.getElementById("calcMode").value;
     const input = parseFloat(document.getElementById("grossSalary").value);
     const input2 = parseFloat(document.getElementById("grossSalary2").value);
 
-    if (isNaN(input) || input <= 0) {
-        alert("Please enter a valid amount.");
-        return;
-    }
+    if (isNaN(input) || input <= 0) { alert("Enter valid salary"); return; }
 
-    // --------------------------
-    // Primary salary
-    // --------------------------
     let gross, net, paye, nssf, shif, housingLevy;
-    if (mode === "gross") {
+
+    if (calcMode === "gross") {
         gross = input;
         ({ paye, nssf, shif, housingLevy, net } = calculateDeductions(gross));
     } else {
@@ -27,12 +33,10 @@ function calculate() {
 
     displayResults(gross, paye, nssf, shif, housingLevy, net);
 
-    // --------------------------
-    // Comparison salary
-    // --------------------------
     if (!isNaN(input2) && input2 > 0) {
         let gross2, net2, paye2, nssf2, shif2, housingLevy2;
-        if (mode === "gross") {
+
+        if (calcMode === "gross") {
             gross2 = input2;
             ({ paye: paye2, nssf: nssf2, shif: shif2, housingLevy: housingLevy2, net: net2 } = calculateDeductions(gross2));
         } else {
@@ -42,7 +46,6 @@ function calculate() {
         }
 
         displayComparison(gross, net, gross2, net2);
-
         renderStackedComparison(
             [paye, nssf, shif, housingLevy, net],
             [paye2, nssf2, shif2, housingLevy2, net2],
@@ -65,7 +68,6 @@ function calculateDeductions(gross) {
     if (shif < 300) shif = 300;
 
     let housingLevy = gross * 0.015;
-
     const taxableIncome = gross - nssf - shif - housingLevy;
 
     const bands = [
@@ -76,8 +78,7 @@ function calculateDeductions(gross) {
         { upper: Infinity, rate: 0.35 }
     ];
 
-    let paye = 0;
-    let lower = 0;
+    let paye = 0, lower = 0;
     for (let band of bands) {
         if (taxableIncome > lower) {
             const taxable = Math.min(taxableIncome, band.upper) - lower;
@@ -88,26 +89,16 @@ function calculateDeductions(gross) {
 
     const personalRelief = 2400;
     paye = Math.max(paye - personalRelief, 0);
-
     const net = gross - (paye + nssf + shif + housingLevy);
 
-    return {
-        paye: Math.round(paye),
-        nssf: Math.round(nssf),
-        shif: Math.round(shif),
-        housingLevy: Math.round(housingLevy),
-        net: Math.round(net)
-    };
+    return { paye: Math.round(paye), nssf: Math.round(nssf), shif: Math.round(shif), housingLevy: Math.round(housingLevy), net: Math.round(net) };
 }
 
 // ===============================
 // Estimate Gross from Net
 // ===============================
 function estimateGrossFromNet(targetNet) {
-    let grossEstimate = targetNet;
-    let iterations = 0;
-    const maxIterations = 200;
-
+    let grossEstimate = targetNet, iterations = 0, maxIterations = 200;
     while (iterations < maxIterations) {
         const result = calculateDeductions(grossEstimate);
         const difference = result.net - targetNet;
@@ -115,7 +106,6 @@ function estimateGrossFromNet(targetNet) {
         grossEstimate -= difference;
         iterations++;
     }
-
     return Math.round(grossEstimate);
 }
 
@@ -143,7 +133,7 @@ function displayResults(gross, paye, nssf, shif, housingLevy, net) {
 }
 
 // ===============================
-// Display numeric comparison
+// Display Comparison
 // ===============================
 function displayComparison(gross1, net1, gross2, net2) {
     const compDiv = document.getElementById("result");
@@ -157,84 +147,86 @@ function displayComparison(gross1, net1, gross2, net2) {
 }
 
 // ===============================
-// Single Donut Chart
+// Render Charts
 // ===============================
 function renderChart(paye, nssf, shif, housingLevy, net) {
     const ctx = document.getElementById('salaryChart').getContext('2d');
     if (window.salaryChart) window.salaryChart.destroy();
-
     window.salaryChart = new Chart(ctx, {
         type: 'doughnut',
-        data: {
-            labels: ['PAYE', 'NSSF', 'SHIF', 'Housing Levy', 'Net Pay'],
-            datasets: [{
-                data: [paye, nssf, shif, housingLevy, net],
-                backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { position: 'bottom' } }
-        }
+        data: { labels: ['PAYE','NSSF','SHIF','Housing Levy','Net Pay'], datasets: [{ data:[paye,nssf,shif,housingLevy,net], backgroundColor:['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'] }] },
+        options: { responsive:true, plugins:{ legend:{ position:'bottom' } } }
     });
 }
 
-// ===============================
-// Stacked Bar Comparison Chart
-// ===============================
 function renderStackedComparison(data1, data2, grossArr) {
     const ctx = document.getElementById('salaryChart').getContext('2d');
-    if (window.salaryChart) window.salaryChart.destroy();
-
+    if(window.salaryChart) window.salaryChart.destroy();
     window.salaryChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['PAYE','NSSF','SHIF','Housing Levy','Net Pay'],
-            datasets: [
-                {
-                    label: `KES ${grossArr[0].toLocaleString()}`,
-                    data: data1,
-                    backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD']
-                },
-                {
-                    label: `KES ${grossArr[1].toLocaleString()}`,
-                    data: data2,
-                    backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'].map(c => lightenColor(c, 0.5))
-                }
+            labels:['PAYE','NSSF','SHIF','Housing Levy','Net Pay'],
+            datasets:[
+                { label:`KES ${grossArr[0].toLocaleString()}`, data:data1, backgroundColor:['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'] },
+                { label:`KES ${grossArr[1].toLocaleString()}`, data:data2, backgroundColor:['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'].map(c=>lightenColor(c,0.5)) }
             ]
         },
-        options: {
-            responsive: true,
-            plugins: { legend: { position: 'bottom' } },
-            scales: {
-                x: { stacked: true },
-                y: { stacked: true, beginAtZero: true }
-            }
-        }
+        options:{ responsive:true, plugins:{ legend:{ position:'bottom' } }, scales:{ x:{ stacked:true }, y:{ stacked:true, beginAtZero:true } } }
     });
 }
 
-// Helper to lighten colors for second dataset
 function lightenColor(color, percent) {
     const num = parseInt(color.replace('#',''),16),
-          amt = Math.round(2.55 * percent * 100),
-          R = (num >> 16) + amt,
-          G = (num >> 8 & 0x00FF) + amt,
-          B = (num & 0x0000FF) + amt;
-    return '#' + (
-      0x1000000 + 
-      (R<255?R<1?0:R:255)*0x10000 + 
-      (G<255?G<1?0:G:255)*0x100 + 
-      (B<255?B<1?0:B:255)
-    ).toString(16).slice(1);
+          amt = Math.round(2.55*percent*100),
+          R = (num >>16)+amt,
+          G = (num>>8 & 0x00FF)+amt,
+          B = (num & 0x0000FF)+amt;
+    return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
 }
-// Accordion Toggle
-document.querySelectorAll(".accordion-btn").forEach(btn => {
-btn.addEventListener("click", function() {
-const content = this.nextElementSibling;
-content.style.display =
-content.style.display === "block" ? "none" : "block";
-});
-});
 
+// ===============================
+// SHIF Calculator
+// ===============================
+function calculateSHIF() {
+    const salary = parseFloat(document.getElementById("shifSalary").value);
+    if(isNaN(salary)||salary<=0){ alert("Enter valid salary"); return; }
+    let shif = salary*0.0275;
+    if(shif<300) shif=300;
+    const taxRelief = shif*0.15;
+    shif = shif-taxRelief;
+    document.getElementById("result").innerHTML = `
+        <h2>SHIF Contribution</h2>
+        <p>Gross Salary: KES ${salary.toLocaleString()}</p>
+        <p>SHIF Contribution (after 15% tax relief): KES ${shif.toFixed(2)}</p>
+    `;
+    if(window.salaryChart) window.salaryChart.destroy();
+}
 
+// ===============================
+// VAT Calculator
+// ===============================
+function calculateVAT() {
+    const amount = parseFloat(document.getElementById("vatAmount").value);
+    const mode = document.getElementById("vatMode").value;
+    if(isNaN(amount)||amount<=0){ alert("Enter valid amount"); return; }
+    let vat=0,total=0;
+    if(mode==="add"){ vat = amount*0.16; total=amount+vat; }
+    else { total = amount/1.16; vat = amount-total; }
+    document.getElementById("result").innerHTML = `
+        <h2>VAT Calculation</h2>
+        <p>Original Amount: KES ${amount.toLocaleString()}</p>
+        <p>VAT (16%): KES ${vat.toFixed(2)}</p>
+        <p>Total: KES ${total.toFixed(2)}</p>
+    `;
+    if(window.salaryChart) window.salaryChart.destroy();
+}
+
+// ===============================
+// Accordion Toggle (if any)
+// ===============================
+document.querySelectorAll(".accordion-btn").forEach(btn=>{
+    btn.addEventListener("click", function(){
+        const content=this.nextElementSibling;
+        content.style.display=content.style.display==="block"?"none":"block";
+    });
+});
