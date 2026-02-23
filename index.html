@@ -11,16 +11,17 @@
 <body>
 
 <header>
-  <h1>Kenya Financial Tools Hub</h1>
-  <p>Calculate PAYE, SHIF, VAT, and compare salaries instantly.</p>
+  <div class="header-top">
+    <h1>Kenya Financial Tools Hub</h1>
+    <p>Calculate PAYE, SHIF, VAT, and compare salaries instantly.</p>
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">FAQ</a>
+    <a href="#">Privacy</a>
+  </nav>
 </header>
-
-<nav>
-  <a href="#">Home</a>
-  <a href="#">About</a>
-  <a href="#">FAQ</a>
-  <a href="#">Privacy</a>
-</nav>
 
 <main class="main-grid">
 
@@ -45,7 +46,7 @@
         <li>Minimum Contribution: KES 300/month</li>
         <li>Tax Relief: 15% on SHIF contribution</li>
         <li>Remittance: By 9th of following month</li>
-        <li>Comparison with previous NHIF is displayed</li>
+        <li>Comparison with previous NHIF is displayed in red/green</li>
       </ul>
     </div>
 
@@ -66,12 +67,14 @@
   <!-- Calculator Column -->
   <section class="calculator-column">
 
-    <label for="calculatorSelect">Choose Calculator</label>
-    <select id="calculatorSelect" onchange="switchCalculator()">
-      <option value="paye">PAYE Calculator</option>
-      <option value="shif">SHIF Calculator</option>
-      <option value="vat">VAT Calculator</option>
-    </select>
+    <div class="calc-card">
+      <label for="calculatorSelect">Choose Calculator</label>
+      <select id="calculatorSelect" onchange="switchCalculator()">
+        <option value="paye">PAYE Calculator</option>
+        <option value="shif">SHIF Calculator</option>
+        <option value="vat">VAT Calculator</option>
+      </select>
+    </div>
 
     <!-- PAYE Calculator -->
     <div id="payeCalculator" class="calc-card">
@@ -87,7 +90,6 @@
       <input type="number" id="grossSalary2" placeholder="e.g. 60000">
 
       <button onclick="calculatePAYE()">Calculate PAYE</button>
-
       <div id="payeResult"></div>
       <canvas id="salaryChart"></canvas>
     </div>
@@ -114,4 +116,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
