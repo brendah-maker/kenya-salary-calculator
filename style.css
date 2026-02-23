@@ -1,291 +1,37 @@
-/* ========================
-   Global Reset & Typography
-======================== */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin:0; padding:0; }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
-    background: #f5f7fb;
-    color: #333;
-    line-height: 1.6;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f7fa;
+  color: #333;
 }
 
-/* ========================
-   Header
-======================== */
-header {
-    text-align: center;
-    padding: 60px 10%;
-    background: linear-gradient(135deg, #1e3a8a, #2563eb);
-    color: #fff;
-}
+header { text-align:center; padding:20px; background:#1a73e8; color:white;}
+header h1 { margin-bottom:5px; }
+nav { text-align:center; margin:15px 0;}
+nav a { margin:0 15px; text-decoration:none; color:#1a73e8; font-weight:600;}
 
-header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-header p {
-    font-size: 16px;
-}
-
-/* ========================
-   Navigation
-======================== */
-nav {
-    width: 100%;
-    background: #1e293b;
-    text-align: center;
-    padding: 15px 0;
-}
-
-nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 15px;
-    font-weight: 600;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #fbbf24;
-}
-
-/* ========================
-   Main Grid Layout
-======================== */
 .main-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Left-info / Right-calculator */
-    gap: 40px;
-    padding: 60px 10%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  max-width:1200px;
+  margin: 0 auto;
+  padding:0 15px;
 }
 
-/* Left Information Section */
-.info-left {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
+.info-column, .calculator-column { display:flex; flex-direction:column; gap:15px; }
+
+.info-card, .calc-card {
+  background:white;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* Right Calculator Section */
-.calculator-right {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 40px 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
+.info-card ul { margin:10px 0 0 15px; }
+.calc-card input, .calc-card select, .calc-card button { margin-top:10px; width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;}
+.calc-card button { background:#1a73e8; color:white; font-weight:600; border:none; cursor:pointer;}
+.calc-card button:hover { background:#1558c0;}
 
-/* ========================
-   Form Elements
-======================== */
-label {
-    display: block;
-    margin-top: 15px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-input, select {
-    width: 100%;
-    padding: 14px;
-    margin-top: 8px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 15px;
-}
-
-button {
-    width: 100%;
-    padding: 16px;
-    margin-top: 20px;
-    border: none;
-    border-radius: 8px;
-    background: #2563eb;
-    color: white;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #1e40af;
-}
-
-/* ========================
-   Results
-======================== */
-#result {
-    margin-top: 25px;
-    padding: 20px;
-    border-radius: 10px;
-    background: #f3f4f6;
-}
-
-.result-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-/* Charts */
-canvas {
-    margin-top: 20px;
-}
-
-/* ========================
-   Info Sections & Accordions
-======================== */
-.info-section, .tax-section, .faq-preview {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-}
-
-.info-section h2,
-.tax-section h2,
-.faq-preview h2 {
-    color: #1e3a8a;
-    margin-bottom: 15px;
-}
-
-/* Tax bands */
-.tax-bands p {
-    margin-bottom: 6px;
-    font-size: 14px;
-}
-
-/* Accordion */
-.accordion-btn {
-    width: 100%;
-    text-align: left;
-    padding: 16px;
-    border: 1px solid #d0def7;
-    background: #e8f0fe;
-    color: #1e3a8a;
-    margin-top: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.accordion-btn:hover {
-    background: #d2e3fc;
-}
-
-.accordion-btn.active {
-    background: #1e3a8a;
-    color: #fff;
-}
-
-.accordion-content {
-    display: none;
-    padding: 12px;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-/* FAQ links */
-.faq-link {
-    display: inline-block;
-    margin-top: 15px;
-    color: #2563eb;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.faq-link:hover {
-    color: #1e40af;
-}
-
-/* ========================
-   Tool Links / Buttons
-======================== */
-a.tool-link {
-    display: inline-block;
-    margin-top: 20px;
-    background: #f97316;
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-a.tool-link:hover {
-    background: #ea580c;
-}
-
-/* ========================
-   Divider
-======================== */
-.divider {
-    height: 2px;
-    background: #e2e8f0;
-    margin: 60px 0;
-}
-
-/* ========================
-   Footer
-======================== */
-footer {
-    text-align: center;
-    padding: 40px 10%;
-    font-size: 14px;
-    color: #555;
-    background: #1e293b;
-}
-
-footer a {
-    color: #fbbf24;
-    text-decoration: none;
-    margin: 0 8px;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-
-/* ========================
-   Responsive Adjustments
-======================== */
-@media (max-width: 1024px) {
-    .main-grid {
-        grid-template-columns: 1fr; /* stack on tablets */
-        gap: 40px;
-    }
-    
-    .calculator-right {
-        margin-top: 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 24px;
-    }
-
-    header p {
-        font-size: 14px;
-    }
-
-    nav a {
-        display: block;
-        margin: 8px 0;
-    }
-
-    section {
-        padding: 30px 5%;
-    }
-}
+.result-row { display:flex; justify-content:space-between; margin-bottom:5px; font-size:14px; }
