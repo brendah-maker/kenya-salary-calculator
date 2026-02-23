@@ -12,7 +12,7 @@
 
 <header>
   <h1>Kenya Financial Tools Hub</h1>
-  <p>Calculate PAYE, SHIF, VAT, and compare your salaries instantly.</p>
+  <p>Calculate PAYE, SHIF, VAT, and compare salaries instantly.</p>
 </header>
 
 <nav>
@@ -21,8 +21,10 @@
 </nav>
 
 <main class="main-grid">
-  <!-- Info Section -->
+
+  <!-- Info Column -->
   <section class="info-column">
+
     <div class="info-card">
       <h2>NSSF Contribution Structure (Effective Feb 2026)</h2>
       <p>Total Rate: 12% of pensionable income (6% Employee + 6% Employer)</p>
@@ -44,10 +46,24 @@
         <li>Comparison with previous NHIF is displayed</li>
       </ul>
     </div>
+
+    <div class="info-card">
+      <h2>PAYE Tax Bands 2026</h2>
+      <ul>
+        <li>KES 0 – 24,000: 10%</li>
+        <li>KES 24,001 – 32,333: 25%</li>
+        <li>KES 32,334 – 47,667: 30%</li>
+        <li>KES 47,668 – 100,000: 32.5%</li>
+        <li>KES 100,001 and above: 35%</li>
+      </ul>
+      <p>Personal relief: KES 2,400/month</p>
+    </div>
+
   </section>
 
-  <!-- Calculator Section -->
+  <!-- Calculator Column -->
   <section class="calculator-column">
+
     <label for="calculatorSelect">Choose Calculator</label>
     <select id="calculatorSelect" onchange="switchCalculator()">
       <option value="paye">PAYE Calculator</option>
@@ -69,6 +85,7 @@
       <input type="number" id="grossSalary2" placeholder="e.g. 60000">
 
       <button onclick="calculatePAYE()">Calculate PAYE</button>
+
       <div id="payeResult"></div>
       <canvas id="salaryChart"></canvas>
     </div>
@@ -88,6 +105,7 @@
       <button onclick="calculateVAT()">Calculate VAT</button>
       <div id="vatResult"></div>
     </div>
+
   </section>
 </main>
 
