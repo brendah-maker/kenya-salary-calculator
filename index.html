@@ -3,113 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kenya Financial Tools Hub | PAYE, SHIF, VAT & More</title>
+<title>Kenya Financial Tools Hub</title>
+<meta name="description" content="Calculate Kenya PAYE, SHIF contributions, VAT, and compare salaries.">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <header>
-    <h1>Kenya Financial Tools Hub</h1>
-    <p>Access PAYE, SHIF, Housing Levy, VAT calculators and other payroll tools in one place.</p>
+  <h1>Kenya Financial Tools Hub</h1>
+  <p>Calculate PAYE, SHIF, VAT, and compare your salaries instantly.</p>
 </header>
 
 <nav>
-    <a href="index.html">Home</a>
+  <a href="#">Home</a>
+  <a href="#">Calculator</a>
 </nav>
 
-<div class="main-grid">
-
-    <!-- LEFT INFO COLUMN -->
-    <div class="info-left">
-        <section class="info-section">
-            <h2>About Kenya Payroll Deductions</h2>
-            <p>Kenyan employees have several statutory deductions from their salary, including PAYE, NSSF, SHIF, and Housing Levy. Understanding these helps you plan your finances effectively.</p>
-        </section>
-
-        <section class="tax-section">
-            <h2>Kenya PAYE Tax Bands 2026</h2>
-            <div class="tax-bands">
-                <p>First KES 24,000 – 10%</p>
-                <p>KES 24,001 – 32,333 – 25%</p>
-                <p>KES 32,334 – 47,667 – 30%</p>
-                <p>KES 47,668 – 100,000 – 32.5%</p>
-                <p>Above KES 100,000 – 35%</p>
-                <p><strong>Personal Relief: KES 2,400 per month</strong></p>
-            </div>
-        </section>
-
-        <section class="info-section">
-            <h2>SHIF Key Details</h2>
-            <ul>
-                <li>Mandatory for all Kenyan residents (employed and self-employed)</li>
-                <li>Minimum contribution: KES 300 per month</li>
-                <li>Tax Relief: 15% tax relief on SHIF contribution</li>
-                <li>Employers must remit deductions by the 9th of the following month</li>
-            </ul>
-        </section>
-
-        <section class="info-section">
-            <h2>VAT Calculator</h2>
-            <p>Calculate VAT at the standard rate of 16%, including or excluding VAT from amounts.</p>
-        </section>
+<main class="main-grid">
+  <!-- Info Section -->
+  <section class="info-column">
+    <div class="info-card">
+      <h2>NSSF Contribution Structure (Effective Feb 2026)</h2>
+      <p>Total Rate: 12% of pensionable income (6% Employee + 6% Employer)</p>
+      <ul>
+        <li>Tier I (LEL): 6% of earnings up to KES 9,000 (Max employee: KES 540)</li>
+        <li>Tier II (UEL): 6% of earnings between KES 9,001 and KES 108,000 (Max employee: KES 5,940)</li>
+        <li>Maximum Employee Deduction: KES 6,480</li>
+        <li>Total Combined Deduction (Employee + Employer): Up to KES 12,960 for income ≥ KES 108,000</li>
+      </ul>
     </div>
 
-    <!-- RIGHT CALCULATOR COLUMN -->
-    <div class="calculator-right">
-        <h2>Financial Calculators</h2>
+    <div class="info-card">
+      <h2>SHIF Overview</h2>
+      <p>Mandatory for all Kenyan residents earning a salary.</p>
+      <ul>
+        <li>Minimum Contribution: KES 300/month</li>
+        <li>Tax Relief: 15% on SHIF contribution</li>
+        <li>Remittance: By 9th of following month</li>
+        <li>Comparison with previous NHIF is displayed</li>
+      </ul>
+    </div>
+  </section>
 
-        <label for="mode">Select Calculator</label>
-        <select id="mode" onchange="switchCalculator()">
-            <option value="paye">PAYE Calculator</option>
-            <option value="shif">SHIF Calculator</option>
-            <option value="vat">VAT Calculator</option>
-        </select>
+  <!-- Calculator Section -->
+  <section class="calculator-column">
+    <label for="calculatorSelect">Choose Calculator</label>
+    <select id="calculatorSelect" onchange="switchCalculator()">
+      <option value="paye">PAYE Calculator</option>
+      <option value="shif">SHIF Calculator</option>
+      <option value="vat">VAT Calculator</option>
+    </select>
 
-        <!-- PAYE Calculator Inputs -->
-        <div id="payeCalc">
-            <label>Calculation Mode</label>
-            <select id="calcMode">
-                <option value="net">Net Salary</option>
-                <option value="gross">Gross Salary</option>
-            </select>
+    <!-- PAYE Calculator -->
+    <div id="payeCalculator" class="calc-card">
+      <label>Calculation Mode</label>
+      <select id="mode">
+        <option value="net">Net Salary</option>
+        <option value="gross">Gross Salary</option>
+      </select>
 
-            <label>Enter Salary (KES)</label>
-            <input type="number" id="grossSalary" placeholder="e.g. 50000">
+      <label>Enter Salary (KES)</label>
+      <input type="number" id="grossSalary" placeholder="e.g. 50000">
+      <label>Compare With Another Salary (Optional)</label>
+      <input type="number" id="grossSalary2" placeholder="e.g. 60000">
 
-            <label>Compare with another salary (Optional)</label>
-            <input type="number" id="grossSalary2" placeholder="e.g. 60000">
-
-            <button onclick="calculatePAYE()">Calculate PAYE</button>
-        </div>
-
-        <!-- SHIF Calculator Inputs -->
-        <div id="shifCalc" style="display:none;">
-            <label>Gross Monthly Salary (KES)</label>
-            <input type="number" id="shifSalary" placeholder="e.g. 50000">
-            <button onclick="calculateSHIF()">Calculate SHIF</button>
-        </div>
-
-        <!-- VAT Calculator Inputs -->
-        <div id="vatCalc" style="display:none;">
-            <label>Amount (KES)</label>
-            <input type="number" id="vatAmount" placeholder="Enter amount">
-            <label>Mode</label>
-            <select id="vatMode">
-                <option value="add">Add 16% VAT</option>
-                <option value="remove">Remove 16% VAT</option>
-            </select>
-            <button onclick="calculateVAT()">Calculate VAT</button>
-        </div>
-
-        <div id="result" style="margin-top:20px;"></div>
-        <canvas id="salaryChart"></canvas>
-
+      <button onclick="calculatePAYE()">Calculate PAYE</button>
+      <div id="payeResult"></div>
+      <canvas id="salaryChart"></canvas>
     </div>
 
-</div>
+    <!-- SHIF Calculator -->
+    <div id="shifCalculator" class="calc-card" style="display:none;">
+      <label>Enter Gross Monthly Salary (KES)</label>
+      <input type="number" id="shifSalary" placeholder="e.g. 50000">
+      <button onclick="calculateSHIF()">Calculate SHIF Contribution</button>
+      <div id="shifResult"></div>
+    </div>
+
+    <!-- VAT Calculator -->
+    <div id="vatCalculator" class="calc-card" style="display:none;">
+      <label>Enter Amount (KES)</label>
+      <input type="number" id="vatAmount" placeholder="e.g. 5000">
+      <button onclick="calculateVAT()">Calculate VAT</button>
+      <div id="vatResult"></div>
+    </div>
+  </section>
+</main>
 
 <script src="script.js"></script>
-
 </body>
 </html>
