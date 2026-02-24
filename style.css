@@ -22,20 +22,24 @@ h1, h2, h3 {
    HEADER
    =============================== */
 header {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .header-top {
     background: #1a73e8;
     color: #fff;
     text-align: center;
-    padding: 30px 20px 20px;
+    padding: 28px 20px 18px;
     border-bottom-left-radius: 14px;
     border-bottom-right-radius: 14px;
 }
 
+.header-top h1 {
+    font-size: 26px;
+}
+
 .header-top p {
-    margin-top: 10px;
+    margin-top: 8px;
     font-size: 15px;
     color: #e0ebff;
 }
@@ -47,7 +51,7 @@ nav {
     background: #111;
     text-align: center;
     padding: 12px 0;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 nav a {
@@ -75,7 +79,6 @@ nav a:hover {
     align-items: flex-start;
 }
 
-/* Columns */
 .info-column,
 .calculator-column {
     flex: 1;
@@ -85,7 +88,7 @@ nav a:hover {
 }
 
 /* ===============================
-   CARD BASE STYLE
+   CARDS
    =============================== */
 .info-card,
 .calc-card {
@@ -103,7 +106,7 @@ nav a:hover {
 }
 
 /* ===============================
-   INFO CARD CONTENT
+   INFO CONTENT
    =============================== */
 .info-card ul {
     margin-top: 10px;
@@ -118,12 +121,12 @@ nav a:hover {
 }
 
 /* ===============================
-   CALCULATOR FORM ELEMENTS
+   FORM ELEMENTS
    =============================== */
 .calc-card label {
     display: block;
     font-weight: 600;
-    margin-top: 15px;
+    margin-top: 14px;
     font-size: 14px;
 }
 
@@ -135,6 +138,7 @@ nav a:hover {
     border-radius: 8px;
     border: 1px solid #ddd;
     font-size: 14px;
+    transition: border 0.2s ease;
 }
 
 .calc-card input:focus,
@@ -179,7 +183,7 @@ nav a:hover {
 #payeResult,
 #shifResult,
 #vatResult {
-    margin-top: 20px;
+    margin-top: 18px;
     background: #f7faff;
     padding: 15px;
     border-radius: 8px;
@@ -195,22 +199,21 @@ nav a:hover {
 }
 
 canvas {
-    margin-top: 20px;
+    margin-top: 18px;
 }
 
 /* ===============================
    RESPONSIVE DESIGN
    =============================== */
 
-/* Tablet and below */
+/* Tablet & below */
 @media (max-width: 1100px) {
     .main-grid {
         flex-direction: column;
     }
 
-    /* Force calculator to appear FIRST on mobile */
     .calculator-column {
-        order: 1;
+        order: 1; /* Calculator appears first */
     }
 
     .info-column {
@@ -218,8 +221,28 @@ canvas {
     }
 }
 
-/* Small phones */
-@media (max-width: 500px) {
+/* Mobile optimization */
+@media (max-width: 768px) {
+
+    /* Smaller blue header */
+    .header-top {
+        padding: 18px 15px 14px;
+    }
+
+    .header-top h1 {
+        font-size: 20px;
+    }
+
+    .header-top p {
+        font-size: 13px;
+        margin-top: 6px;
+    }
+
+    nav {
+        padding: 10px 0;
+        margin-bottom: 20px;
+    }
+
     nav a {
         margin: 0 8px;
         font-size: 13px;
