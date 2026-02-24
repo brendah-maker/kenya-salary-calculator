@@ -258,6 +258,9 @@ canvas {
         font-size: 15px;
     }
 }
+.adsbygoogle {
+    min-height: 100px;
+}
 footer {
     text-align: center;
     padding: 20px;
@@ -265,4 +268,5 @@ footer {
     color: #777;
     margin-top: 40px;
 }
+
 
