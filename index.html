@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kenya Financial Tools Hub</title>
-<meta name="description" content="Calculate Kenya PAYE, SHIF contributions, VAT, and compare salaries.">
+<title>About – Kenya Financial Tools Hub</title>
+<meta name="description" content="Learn about Kenya Financial Tools Hub and how it helps you calculate PAYE, SHIF, VAT and net salary accurately.">
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
 
 <header>
@@ -17,7 +17,7 @@
   </div>
   <nav>
     <a href="index.html">Home</a>
-    <a href="about.html">About</a>
+    <a href="about.html" style="color:#1a73e8;">About</a>
     <a href="faq.html">FAQ</a>
     <a href="privacy.html">Privacy</a>
   </nav>
@@ -25,116 +25,64 @@
 
 <main class="main-grid">
 
-  <!-- Info Column -->
+  <!-- Main Content Column -->
   <section class="info-column">
 
     <div class="info-card">
-      <h2>NSSF Contribution Structure (Effective Feb 2026)</h2>
-      <p>Total Rate: 12% of pensionable income (6% Employee + 6% Employer)</p>
+      <h2>About Kenya Financial Tools Hub</h2>
+      <p>
+        Kenya Financial Tools Hub was created to help employees, freelancers, and employers
+        easily calculate their net salary after statutory deductions such as PAYE, NSSF, SHIF, and VAT.
+      </p>
+      <p>
+        Many people do not clearly understand how much they take home after deductions.
+        This platform simplifies complex tax calculations into clear, easy-to-read breakdowns.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>What This Platform Offers</h2>
       <ul>
-        <li>Tier I (LEL): 6% of earnings up to KES 9,000 (Max employee: KES 540)</li>
-        <li>Tier II (UEL): 6% of earnings between KES 9,001 and KES 108,000 (Max employee: KES 5,940)</li>
-        <li>Maximum Employee Deduction: KES 6,480</li>
-        <li>Total Combined Deduction (Employee + Employer): Up to KES 12,960 for income ≥ KES 108,000</li>
+        <li>Accurate PAYE calculations based on Kenya tax bands</li>
+        <li>NSSF Tier I and Tier II breakdown</li>
+        <li>SHIF contribution calculator (2.75% of gross salary)</li>
+        <li>VAT calculator</li>
+        <li>Salary comparison insights</li>
       </ul>
     </div>
 
     <div class="info-card">
-      <h2>SHIF Overview</h2>
-      <p>Mandatory for all Kenyan residents earning a salary.</p>
-      <ul>
-        <li>SHIF is designed to be more comprehensive and equitable, aimed at enhancing coverage for both formal and informal sectors.</li>
-        <li>Minimum Contribution: KES 300/month</li>
-        <li>2.75% of gross monthly salary for salaried employees</li>
-        <li>Covers essential services, including outpatient care, inpatient services, maternity, dialysis, cancer management, and surgical services</li>
-        <li>Remittance by 9th of following month</li>
-      </ul>
+      <h2>Our Mission</h2>
+      <p>
+        Our mission is to promote financial awareness and transparency by giving
+        Kenyans simple tools to understand income, deductions, and tax obligations.
+      </p>
+      <p>
+        Future updates will include budgeting tools, financial planning features,
+        and additional calculators tailored for the Kenyan market.
+      </p>
     </div>
 
-    <div class="info-card">
-      <h2>PAYE Tax Bands 2026</h2>
-      <ul>
-        <li>KES 0 – 24,000: 10%</li>
-        <li>KES 24,001 – 32,333: 25%</li>
-        <li>KES 32,334 – 47,667: 30%</li>
-        <li>KES 47,668 – 100,000: 32.5%</li>
-        <li>KES 100,001 and above: 35%</li>
-      </ul>
-      <p>Personal relief: KES 2,400/month</p>
-    </div>
-
-    <div class="info-card">
-      <h2>Value Added Tax (VAT)</h2>
-      <ul>
-        <li>Value Added Tax (VAT) is an indirect tax on goods and services at each stage of production and sale</li>
-        <li>It is collected by businesses but ultimately paid by the final consumer</li>
-        <li>Businesses pay VAT on purchases (input tax) and charge VAT on sales (output tax)</li>
-        <li>VAT payable is calculated as output tax minus input tax.</li>
-        <li>VAT applies to taxable goods, services, and imports.</li>
-      </ul>
-    </div>
-    
   </section>
 
-  <!-- Calculator Column -->
+  <!-- Empty Right Column (to match home spacing) -->
   <section class="calculator-column">
-
     <div class="calc-card">
-      <label for="calculatorSelect">Choose Calculator</label>
-      <select id="calculatorSelect" onchange="switchCalculator()">
-        <option value="paye">PAYE Calculator</option>
-        <option value="shif">SHIF Calculator</option>
-        <option value="vat">VAT Calculator</option>
-      </select>
+      <h3>Why Use This Platform?</h3>
+      <p>
+        ✓ Updated statutory rates  
+        <br>✓ Simple and transparent calculations  
+        <br>✓ Free and easy to use  
+        <br>✓ Built specifically for Kenya  
+      </p>
     </div>
-
-    <!-- PAYE Calculator -->
-    <div id="payeCalculator" class="calc-card">
-      <label>Calculation Mode</label>
-      <select id="mode">
-        <option value="net">Net Salary</option>
-        <option value="gross">Gross Salary</option>
-      </select>
-
-      <label>Enter Salary (KES)</label>
-      <input type="number" id="grossSalary" placeholder="e.g. 50000">
-      <label>Compare With Another Salary (Optional)</label>
-      <input type="number" id="grossSalary2" placeholder="e.g. 60000">
-
-      <button onclick="calculatePAYE()">Calculate PAYE</button>
-      <div id="payeResult"></div>
-      <canvas id="salaryChart"></canvas>
-    </div>
-
-    <!-- SHIF Calculator -->
-    <div id="shifCalculator" class="calc-card" style="display:none;">
-      <label>Enter Gross Monthly Salary (KES)</label>
-      <input type="number" id="shifSalary" placeholder="e.g. 50000">
-      <button onclick="calculateSHIF()">Calculate SHIF Contribution</button>
-      <div id="shifResult"></div>
-    </div>
-
-    <!-- VAT Calculator -->
-    <div id="vatCalculator" class="calc-card" style="display:none;">
-      <label>Enter Amount (KES)</label>
-      <input type="number" id="vatAmount" placeholder="e.g. 5000">
-      <button onclick="calculateVAT()">Calculate VAT</button>
-      <div id="vatResult"></div>
-    </div>
-
   </section>
+
 </main>
 
-<script src="script.js"></script>
-</body>
-
-  <footer>
+<footer>
   © 2026 Kenya Financial Tools Hub. All rights reserved.
 </footer>
-  <meta name="monetag" content="ba3aed2561d2d4f4e2e90966eef8bd12">
+
+</body>
 </html>
-
-
-
-
-
