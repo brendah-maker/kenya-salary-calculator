@@ -360,4 +360,47 @@ footer {
     color: #1558c0;
 }
 
+/* ===============================
+   BLOG ARTICLE PAGE
+   =============================== */
+
+.blog-article {
+    max-width: 850px;
+    margin: 50px auto;
+    padding: 0 20px 60px;
+}
+
+.blog-article h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.article-meta {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 25px;
+}
+
+.blog-article h2 {
+    margin-top: 35px;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.blog-article p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 18px;
+}
+
+.blog-article ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.blog-article li {
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
 
