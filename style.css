@@ -269,16 +269,36 @@ footer {
     margin-top: 40px;
 }
 
-@media (min-width: 900px) {
-    .info-column {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
+/* ===============================
+   BLOG PAGE
+   =============================== */
 
-    .info-column > .info-card:first-child {
-        grid-column: span 2;
-    }
+.blog-card h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.blog-card p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.read-more {
+    display: inline-block;
+    text-decoration: none;
+    background: #1a73e8;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.read-more:hover {
+    background: #1558c0;
+    transform: translateY(-2px);
 }
 
 
