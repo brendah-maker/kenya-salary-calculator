@@ -9,8 +9,6 @@
 
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<meta name="monetag" content="ba3aed2561d2d4f4e2e90966eef8bd12">
 </head>
 
 <body>
@@ -35,48 +33,43 @@
   <section class="info-column">
 
     <div class="info-card">
-      <h2>NSSF Contribution Structure (Effective Feb 2026)</h2>
-      <p>Total Rate: 12% of pensionable income (6% Employee + 6% Employer)</p>
+      <h2>NSSF Contribution Structure (2026)</h2>
       <ul>
-        <li>Tier I (LEL): 6% of earnings up to KES 9,000 (Max employee: KES 540)</li>
-        <li>Tier II (UEL): 6% of earnings between KES 9,001 and KES 108,000 (Max employee: KES 5,940)</li>
-        <li>Maximum Employee Deduction: KES 6,480</li>
-        <li>Total Combined Deduction (Employee + Employer): Up to KES 12,960 for income ≥ KES 108,000</li>
+        <li>Tier I (LEL): 6% up to KES 9,000 (Max employee: KES 540)</li>
+        <li>Tier II (UEL): 6% of earnings 9,001–108,000 (Max employee: KES 5,940)</li>
+        <li>Max Employee Deduction: KES 6,480</li>
       </ul>
     </div>
 
     <div class="info-card">
       <h2>SHIF Overview</h2>
-      <p>Mandatory for all Kenyan residents earning a salary.</p>
       <ul>
-        <li>SHIF is designed to be more comprehensive and equitable, aimed at enhancing coverage for both formal and informal sectors.</li>
+        <li>Mandatory for all Kenyan residents earning salary</li>
         <li>Minimum Contribution: KES 300/month</li>
-        <li>2.75% of gross monthly salary for salaried employees</li>
-        <li>Covers essential services, including outpatient care, inpatient services, maternity, dialysis, cancer management, and surgical services</li>
-        <li>Remittance by 9th of following month</li>
+        <li>2.75% of gross salary</li>
+        <li>Covers essential healthcare services</li>
       </ul>
     </div>
 
     <div class="info-card">
       <h2>PAYE Tax Bands 2026</h2>
       <ul>
-        <li>KES 0 – 24,000: 10%</li>
-        <li>KES 24,001 – 32,333: 25%</li>
-        <li>KES 32,334 – 47,667: 30%</li>
-        <li>KES 47,668 – 100,000: 32.5%</li>
-        <li>KES 100,001 and above: 35%</li>
+        <li>0–24,000: 10%</li>
+        <li>24,001–32,333: 25%</li>
+        <li>32,334–47,667: 30%</li>
+        <li>47,668–100,000: 32.5%</li>
+        <li>100,001 and above: 35%</li>
       </ul>
-      <p>Personal relief: KES 2,400/month</p>
+      <p>Personal Relief: KES 2,400/month</p>
     </div>
 
     <div class="info-card">
       <h2>Value Added Tax (VAT)</h2>
       <ul>
-        <li>Value Added Tax (VAT) is an indirect tax on goods and services at each stage of production and sale</li>
-        <li>It is collected by businesses but ultimately paid by the final consumer</li>
-        <li>Businesses pay VAT on purchases (input tax) and charge VAT on sales (output tax)</li>
-        <li>VAT payable is calculated as output tax minus input tax.</li>
-        <li>VAT applies to taxable goods, services, and imports.</li>
+        <li>Indirect tax on goods/services</li>
+        <li>Businesses collect VAT, final consumer pays</li>
+        <li>VAT = Output Tax – Input Tax</li>
+        <li>Standard Rate: 16%</li>
       </ul>
     </div>
 
@@ -87,7 +80,7 @@
 
     <div class="calc-card">
       <label for="calculatorSelect">Choose Calculator</label>
-      <select id="calculatorSelect" onchange="switchCalculator()">
+      <select id="calculatorSelect">
         <option value="paye">PAYE Calculator</option>
         <option value="shif">SHIF Calculator</option>
         <option value="vat">VAT Calculator</option>
@@ -96,19 +89,19 @@
 
     <!-- PAYE Calculator -->
     <div id="payeCalculator" class="calc-card">
-      <label>Calculation Mode</label>
+      <label for="mode">Calculation Mode</label>
       <select id="mode">
         <option value="net">Net Salary</option>
         <option value="gross">Gross Salary</option>
       </select>
 
-      <label>Enter Salary (KES)</label>
+      <label for="grossSalary">Enter Salary (KES)</label>
       <input type="number" id="grossSalary" placeholder="e.g. 50000">
 
-      <label>Compare With Another Salary (Optional)</label>
+      <label for="grossSalary2">Compare With Another Salary (Optional)</label>
       <input type="number" id="grossSalary2" placeholder="e.g. 60000">
 
-      <button onclick="calculatePAYE()">Calculate PAYE</button>
+      <button id="calculatePAYEButton">Calculate PAYE</button>
 
       <div id="payeResult"></div>
       <canvas id="salaryChart"></canvas>
@@ -116,17 +109,17 @@
 
     <!-- SHIF Calculator -->
     <div id="shifCalculator" class="calc-card" style="display:none;">
-      <label>Enter Gross Monthly Salary (KES)</label>
+      <label for="shifSalary">Enter Gross Monthly Salary (KES)</label>
       <input type="number" id="shifSalary" placeholder="e.g. 50000">
-      <button onclick="calculateSHIF()">Calculate SHIF Contribution</button>
+      <button id="calculateSHIFButton">Calculate SHIF Contribution</button>
       <div id="shifResult"></div>
     </div>
 
     <!-- VAT Calculator -->
     <div id="vatCalculator" class="calc-card" style="display:none;">
-      <label>Enter Amount (KES)</label>
+      <label for="vatAmount">Enter Amount (KES)</label>
       <input type="number" id="vatAmount" placeholder="e.g. 5000">
-      <button onclick="calculateVAT()">Calculate VAT</button>
+      <button id="calculateVATButton">Calculate VAT</button>
       <div id="vatResult"></div>
     </div>
 
@@ -138,48 +131,17 @@
   © 2026 Kenya Financial Tools Hub. All rights reserved.
 </footer>
 
-<script src="script.js"></script>
-
-<!-- Cookie Consent Banner -->
-<div id="cookieBanner" class="cookie-banner">
-  <p>
-    We use cookies to enhance your browsing experience and analyze site traffic.
-    By continuing to use this site, you accept our <a href="../privacy.html">Privacy Policy</a>.
-  </p>
-  <button id="acceptCookies">Accept</button>
-</div>
-
-<!-- Cookie Consent Banner -->
+<!-- Cookie Banner -->
 <div id="cookieBanner" class="cookie-banner" style="display:none;">
   <p>
     We use cookies to enhance your browsing experience and analyze site traffic.
     By continuing to use this site, you accept our 
-    <a href="../privacy.html">Privacy Policy</a>.
+    <a href="privacy.html">Privacy Policy</a>.
   </p>
   <button id="acceptCookies">Accept</button>
 </div>
 
-<script>
-  // Wait for DOM to fully load
-  document.addEventListener('DOMContentLoaded', function() {
-    const banner = document.getElementById('cookieBanner');
-    const button = document.getElementById('acceptCookies');
+<script src="script.js"></script>
 
-    // Show banner only if user has not accepted yet
-    if(!localStorage.getItem('cookiesAccepted')) {
-      banner.style.display = 'flex';
-    }
-
-    // Handle button click
-    button.addEventListener('click', function() {
-      localStorage.setItem('cookiesAccepted', 'true');
-      banner.style.display = 'none';
-    });
-  });
-</script>
-  
 </body>
 </html>
-
-
-
