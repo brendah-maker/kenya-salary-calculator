@@ -83,8 +83,23 @@ nav a:hover {
 .calculator-column {
     flex: 1;
     display: flex;
+    gap: 20px;
+}
+
+/* Horizontal cards layout for About & Privacy pages */
+.info-column {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.info-column .info-card {
+    flex: 1 1 300px; /* responsive min width */
+    max-width: 400px;
+}
+
+/* Vertical column for calculator/highlight cards */
+.calculator-column {
     flex-direction: column;
-    gap: 18px;
 }
 
 /* ===============================
@@ -121,7 +136,7 @@ nav a:hover {
 }
 
 /* ===============================
-   FORM ELEMENTS
+   FORM ELEMENTS (Calculator)
    =============================== */
 .calc-card label {
     display: block;
@@ -219,12 +234,18 @@ canvas {
     .info-column {
         order: 2;
     }
+
+    .info-column {
+        flex-direction: column; /* stacked on smaller screens */
+    }
+
+    .info-column .info-card {
+        max-width: 100%;
+    }
 }
 
 /* Mobile optimization */
 @media (max-width: 768px) {
-
-    /* Smaller blue header */
     .header-top {
         padding: 18px 15px 14px;
     }
@@ -258,9 +279,17 @@ canvas {
         font-size: 15px;
     }
 }
+
+/* ===============================
+   ADS
+   =============================== */
 .adsbygoogle {
     min-height: 100px;
 }
+
+/* ===============================
+   FOOTER
+   =============================== */
 footer {
     text-align: center;
     padding: 20px;
@@ -272,7 +301,6 @@ footer {
 /* ===============================
    BLOG PAGE
    =============================== */
-
 .blog-card h2 {
     margin-bottom: 10px;
     font-size: 18px;
@@ -302,68 +330,8 @@ footer {
 }
 
 /* ===============================
-   BLOG PAGE (Editorial Style)
-   =============================== */
-
-.blog-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px 60px;
-}
-
-.blog-header {
-    margin-bottom: 40px;
-}
-
-.blog-header h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-.blog-header p {
-    color: #666;
-    font-size: 15px;
-}
-
-.blog-item {
-    padding: 30px 0;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.blog-item h2 {
-    font-size: 20px;
-    margin-bottom: 8px;
-}
-
-.blog-meta {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 12px;
-}
-
-.blog-item p {
-    font-size: 15px;
-    color: #444;
-    margin-bottom: 15px;
-    line-height: 1.7;
-}
-
-.blog-link {
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    color: #1a73e8;
-    transition: color 0.2s ease;
-}
-
-.blog-link:hover {
-    color: #1558c0;
-}
-
-/* ===============================
    BLOG ARTICLE PAGE
    =============================== */
-
 .blog-article {
     max-width: 850px;
     margin: 50px auto;
@@ -404,39 +372,42 @@ footer {
     line-height: 1.7;
 }
 
+/* ===============================
+   COOKIE BANNER
+   =============================== */
 .cookie-banner {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #1a73e8;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  z-index: 9999;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  font-family: sans-serif;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #1a73e8;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    z-index: 9999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: sans-serif;
 }
 
 .cookie-banner p {
-  margin: 0;
-  font-size: 14px;
+    margin: 0;
+    font-size: 14px;
 }
 
 .cookie-banner a {
-  color: #ffd700;
-  text-decoration: underline;
+    color: #ffd700;
+    text-decoration: underline;
 }
 
 .cookie-banner button {
-  background: #ffd700;
-  color: #1a73e8;
-  border: none;
-  padding: 8px 15px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
+    background: #ffd700;
+    color: #1a73e8;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
 }
