@@ -148,8 +148,38 @@
   </p>
   <button id="acceptCookies">Accept</button>
 </div>
+
+<!-- Cookie Consent Banner -->
+<div id="cookieBanner" class="cookie-banner" style="display:none;">
+  <p>
+    We use cookies to enhance your browsing experience and analyze site traffic.
+    By continuing to use this site, you accept our 
+    <a href="../privacy.html">Privacy Policy</a>.
+  </p>
+  <button id="acceptCookies">Accept</button>
+</div>
+
+<script>
+  // Wait for DOM to fully load
+  document.addEventListener('DOMContentLoaded', function() {
+    const banner = document.getElementById('cookieBanner');
+    const button = document.getElementById('acceptCookies');
+
+    // Show banner only if user has not accepted yet
+    if(!localStorage.getItem('cookiesAccepted')) {
+      banner.style.display = 'flex';
+    }
+
+    // Handle button click
+    button.addEventListener('click', function() {
+      localStorage.setItem('cookiesAccepted', 'true');
+      banner.style.display = 'none';
+    });
+  });
+</script>
   
 </body>
 </html>
+
 
 
