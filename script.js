@@ -7,96 +7,97 @@ function switchCalculator() {
     document.getElementById("shifCalculator").style.display = calc === "shif" ? "block" : "none";
     document.getElementById("vatCalculator").style.display = calc === "vat" ? "block" : "none";
 
-    // Clear previous results
     document.getElementById("payeResult").innerHTML = "";
     document.getElementById("shifResult").innerHTML = "";
     document.getElementById("vatResult").innerHTML = "";
+
     if (window.salaryChart) window.salaryChart.destroy();
 }
 
 // ===============================
-// PAYE Calculator
+// PAYE Calculator (2025/26 Pre-Amendment)
 // ===============================
 function calculatePAYE() {
     const mode = document.getElementById("mode").value;
-    const input = parseFloat(document.getElementById("grossSalary").value);
+    const input1 = parseFloat(document.getElementById("grossSalary").value);
     const input2 = parseFloat(document.getElementById("grossSalary2").value);
 
-    if (isNaN(input) || input <= 0) { alert("Please enter a valid amount."); return; }
+    if (isNaN(input1) || input1 <= 0) { alert("Enter valid salary"); return; }
 
-    let gross, net, paye, nssf, shif, housingLevy;
-
-    if (mode === "gross") {
-        gross = input;
-        ({ paye, nssf, shif, housingLevy, net } = calculateDeductions(gross));
-    } else {
-        net = input;
-        gross = estimateGrossFromNet(net);
-        ({ paye, nssf, shif, housingLevy, net } = calculateDeductions(gross));
-    }
-
-    displayResults(gross, paye, nssf, shif, housingLevy, net);
+    const result1 = mode === "gross" ? calculateDeductions(input1) : calculateDeductions(estimateGrossFromNet(input1));
+    displayResults(result1);
 
     if (!isNaN(input2) && input2 > 0) {
-        let gross2, net2, paye2, nssf2, shif2, housingLevy2;
-        if (mode === "gross") {
-            gross2 = input2;
-            ({ paye: paye2, nssf: nssf2, shif: shif2, housingLevy: housingLevy2, net: net2 } = calculateDeductions(gross2));
-        } else {
-            net2 = input2;
-            gross2 = estimateGrossFromNet(net2);
-            ({ paye: paye2, nssf: nssf2, shif: shif2, housingLevy: housingLevy2, net: net2 } = calculateDeductions(gross2));
-        }
-
-        displayComparison(gross, net, gross2, net2);
+        const result2 = mode === "gross" ? calculateDeductions(input2) : calculateDeductions(estimateGrossFromNet(input2));
+        displayComparison(result1, result2);
         renderStackedComparison(
-            [paye, nssf, shif, housingLevy, net],
-            [paye2, nssf2, shif2, housingLevy2, net2],
-            [gross, gross2]
+            [result1.paye, result1.nssf, result1.shif, result1.housingLevy, result1.net],
+            [result2.paye, result2.nssf, result2.shif, result2.housingLevy, result2.net],
+            [result1.gross, result2.gross]
         );
     } else {
-        renderChart(paye, nssf, shif, housingLevy, net);
+        renderChart(result1);
     }
 }
 
-// PAYE Helper Functions
+// ===============================
+// Calculate Deductions
+// ===============================
 function calculateDeductions(gross) {
-    // NSSF
-    let nssf = gross <= 9000 ? gross*0.06 : gross > 108000 ? 6480 : 540 + (gross-9000)*0.06;
-    if (nssf > 6480) nssf = 6480;
+    // ----- NSSF 2026 Tier 1+2 -----
+    let nssf = gross <= 9000 ? gross * 0.06
+             : gross > 108000 ? 6480
+             : 540 + (gross - 9000) * 0.06;
+    nssf = Math.min(nssf, 6480);
 
-    // SHIF
-    let shif = Math.max(gross*0.0275, 300);
+    // ----- SHIF 2026 -----
+    let shif = Math.max(gross * 0.0275, 300); // Minimum 300, 2.75% of gross, no max
 
-    // Housing Levy
+    // ----- Housing Levy 1.5% -----
     let housingLevy = gross * 0.015;
 
-    // PAYE
-    const taxableIncome = gross - nssf - shif - housingLevy;
+    // ----- Taxable Income for PAYE -----
+    const taxableIncome = gross - nssf; // Only NSSF reduces taxable income
+
+    // ----- PAYE Bands Pre-Amendment 2025/26 -----
     const bands = [
         { upper: 24000, rate: 0.10 },
         { upper: 32333, rate: 0.25 },
-        { upper: 47667, rate: 0.30 },
-        { upper: 100000, rate: 0.325 },
+        { upper: 500000, rate: 0.30 },
+        { upper: 800000, rate: 0.325 },
         { upper: Infinity, rate: 0.35 }
     ];
-    let paye = 0, lower = 0;
+
+    let paye = 0;
+    let lower = 0;
     for (let band of bands) {
         if (taxableIncome > lower) {
-            paye += (Math.min(taxableIncome, band.upper) - lower)*band.rate;
+            paye += (Math.min(taxableIncome, band.upper) - lower) * band.rate;
             lower = band.upper;
         } else break;
     }
+
     const personalRelief = 2400;
     paye = Math.max(paye - personalRelief, 0);
+
     const net = gross - (paye + nssf + shif + housingLevy);
 
-    return { paye: Math.round(paye), nssf: Math.round(nssf), shif: Math.round(shif), housingLevy: Math.round(housingLevy), net: Math.round(net) };
+    return {
+        gross: Math.round(gross),
+        paye: Math.round(paye),
+        nssf: Math.round(nssf),
+        shif: Math.round(shif),
+        housingLevy: Math.round(housingLevy),
+        net: Math.round(net)
+    };
 }
 
+// ===============================
+// Estimate Gross from Net
+// ===============================
 function estimateGrossFromNet(targetNet) {
     let grossEstimate = targetNet;
-    for (let i=0;i<200;i++) {
+    for (let i = 0; i < 200; i++) {
         const result = calculateDeductions(grossEstimate);
         const diff = result.net - targetNet;
         if (Math.abs(diff) < 1) break;
@@ -105,10 +106,13 @@ function estimateGrossFromNet(targetNet) {
     return Math.round(grossEstimate);
 }
 
-function displayResults(gross, paye, nssf, shif, housingLevy, net) {
+// ===============================
+// Display Results
+// ===============================
+function displayResults({ gross, paye, nssf, shif, housingLevy, net }) {
     const deductions = paye + nssf + shif + housingLevy;
-    const takeHomePercent = ((net/gross)*100).toFixed(1);
-    const deductionPercent = ((deductions/gross)*100).toFixed(1);
+    const takeHomePercent = ((net / gross) * 100).toFixed(1);
+    const deductionPercent = ((deductions / gross) * 100).toFixed(1);
 
     document.getElementById("payeResult").innerHTML = `
         <h2>Salary Breakdown</h2>
@@ -125,23 +129,32 @@ function displayResults(gross, paye, nssf, shif, housingLevy, net) {
     `;
 }
 
-function displayComparison(gross1, net1, gross2, net2) {
+// ===============================
+// Comparison, Charts & Helpers
+// ===============================
+function displayComparison(res1, res2) {
     const compDiv = document.getElementById("payeResult");
     compDiv.innerHTML += `
         <h3>Salary Comparison</h3>
-        <div class="result-row"><span>Gross Salary 1:</span><span>KES ${gross1.toLocaleString()}</span></div>
-        <div class="result-row"><span>Net Salary 1:</span><span>KES ${net1.toLocaleString()}</span></div>
-        <div class="result-row"><span>Gross Salary 2:</span><span>KES ${gross2.toLocaleString()}</span></div>
-        <div class="result-row"><span>Net Salary 2:</span><span>KES ${net2.toLocaleString()}</span></div>
+        <div class="result-row"><span>Gross Salary 1:</span><span>KES ${res1.gross.toLocaleString()}</span></div>
+        <div class="result-row"><span>Net Salary 1:</span><span>KES ${res1.net.toLocaleString()}</span></div>
+        <div class="result-row"><span>Gross Salary 2:</span><span>KES ${res2.gross.toLocaleString()}</span></div>
+        <div class="result-row"><span>Net Salary 2:</span><span>KES ${res2.net.toLocaleString()}</span></div>
     `;
 }
 
-function renderChart(paye, nssf, shif, housingLevy, net) {
+function renderChart({ paye, nssf, shif, housingLevy, net }) {
     const ctx = document.getElementById('salaryChart').getContext('2d');
     if (window.salaryChart) window.salaryChart.destroy();
     window.salaryChart = new Chart(ctx, {
         type: 'doughnut',
-        data: { labels: ['PAYE','NSSF','SHIF','Housing Levy','Net Pay'], datasets:[{data:[paye,nssf,shif,housingLevy,net],backgroundColor:['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD']}] },
+        data: {
+            labels: ['PAYE','NSSF','SHIF','Housing Levy','Net Pay'],
+            datasets:[{
+                data:[paye,nssf,shif,housingLevy,net],
+                backgroundColor:['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD']
+            }]
+        },
         options: { responsive:true, plugins:{legend:{position:'bottom'}} }
     });
 }
@@ -155,7 +168,7 @@ function renderStackedComparison(data1, data2, grossArr) {
             labels: ['PAYE','NSSF','SHIF','Housing Levy','Net Pay'],
             datasets:[
                 { label: `KES ${grossArr[0].toLocaleString()}`, data: data1, backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'] },
-                { label: `KES ${grossArr[1].toLocaleString()}`, data: data2, backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'].map(c=>lightenColor(c,0.5)) }
+                { label: `KES ${grossArr[1].toLocaleString()}`, data: data2, backgroundColor: ['#FF6384','#36A2EB','#FFCE56','#4BC0C0','#8E44AD'].map(c => lightenColor(c,0.5)) }
             ]
         },
         options:{ responsive:true, plugins:{legend:{position:'bottom'}}, scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}} }
@@ -163,69 +176,10 @@ function renderStackedComparison(data1, data2, grossArr) {
 }
 
 function lightenColor(color, percent) {
-    const num = parseInt(color.replace('#',''),16),
-          amt = Math.round(2.55 * percent * 100),
-          R = (num >> 16) + amt,
-          G = (num >> 8 & 0x00FF) + amt,
-          B = (num & 0x0000FF) + amt;
-    return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255)).toString(16).slice(1);
-}
-
-// ===============================
-// SHIF Calculator
-// ===============================
-function calculateSHIF() {
-    const salary = parseFloat(document.getElementById("shifSalary").value);
-    if (isNaN(salary) || salary <= 0) { alert("Enter valid salary"); return; }
-
-    let shif = Math.max(salary*0.0275,300);
-
-    // Previous NHIF
-    let nhif = 1200; // Example default, can expand logic
-    if (salary <= 5999) nhif=150;
-    else if (salary <= 7999) nhif=300;
-    else if (salary <= 11999) nhif=400;
-    else if (salary <= 14999) nhif=500;
-    else if (salary <= 19999) nhif=600;
-    else if (salary <= 24999) nhif=750;
-    else if (salary <= 29999) nhif=850;
-    else if (salary <= 34999) nhif=900;
-    else if (salary <= 39999) nhif=950;
-    else if (salary <= 44999) nhif=1000;
-    else if (salary <= 49999) nhif=1100;
-    else if (salary <= 59999) nhif=1200;
-    else if (salary <= 69999) nhif=1300;
-    else if (salary <= 79999) nhif=1400;
-    else if (salary <= 89999) nhif=1500;
-    else if (salary <= 99999) nhif=1600;
-    else nhif=1700;
-
-    const diff = shif - nhif;
-    const percent = (diff/nhif)*100;
-
-    document.getElementById("shifResult").innerHTML = `
-        <div class="${diff>0?'negative':'positive'}">
-            <p>SHIF Contribution (2.75%): KES ${shif.toFixed(2)}</p>
-            <p>Previous NHIF Contribution: KES ${nhif.toFixed(2)}</p>
-            <p>You will pay ${diff>0?`(+${percent.toFixed(1)}%)`:`(${percent.toFixed(1)}%)`} KES ${Math.abs(diff).toFixed(2)} ${diff>0?'more':'less'} than previous NHIF contribution.</p>
-        </div>
-    `;
-}
-
-// ===============================
-// VAT Calculator
-// ===============================
-function calculateVAT() {
-    const amount = parseFloat(document.getElementById("vatAmount").value);
-    if (isNaN(amount) || amount <= 0) { alert("Enter valid amount"); return; }
-    const vat = amount * 0.16; // Assuming 16%
-    const total = amount + vat;
-
-    document.getElementById("vatResult").innerHTML = `
-        <div>
-            <p>Amount: KES ${amount.toLocaleString()}</p>
-            <p>VAT (16%): KES ${vat.toLocaleString()}</p>
-            <p>Total: KES ${total.toLocaleString()}</p>
-        </div>
-    `;
+    const num = parseInt(color.replace('#',''),16);
+    const amt = Math.round(2.55 * percent * 100);
+    const R = Math.min(255, Math.max(0,(num >> 16) + amt));
+    const G = Math.min(255, Math.max(0,((num >> 8) & 0xFF) + amt));
+    const B = Math.min(255, Math.max(0,(num & 0xFF) + amt));
+    return '#' + (0x1000000 + (R<<16) + (G<<8) + B).toString(16).slice(1);
 }
