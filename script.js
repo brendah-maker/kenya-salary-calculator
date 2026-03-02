@@ -183,3 +183,16 @@ function lightenColor(color, percent) {
     const B = Math.min(255, Math.max(0,(num & 0xFF) + amt));
     return '#' + (0x1000000 + (R<<16) + (G<<8) + B).toString(16).slice(1);
 }
+
+<script>
+  // Check if user already accepted cookies
+  if(!localStorage.getItem('cookiesAccepted')) {
+    document.getElementById('cookieBanner').style.display = 'flex';
+  }
+
+  document.getElementById('acceptCookies').addEventListener('click', function() {
+    localStorage.setItem('cookiesAccepted', 'true');
+    document.getElementById('cookieBanner').style.display = 'none';
+  });
+</script>
+
