@@ -1,18 +1,45 @@
-// ===============================
-// WAIT FOR DOM
-// ===============================
-document.addEventListener("DOMContentLoaded", function () {
+// ============================================
+// KENYA FINANCIAL TOOLS HUB - FULL SCRIPT
+// ============================================
 
-  // Calculator Switch
-  const calcSelect = document.getElementById("calculatorSelect");
-  calcSelect.addEventListener("change", switchCalculator);
+document.addEventListener("DOMContentLoaded", () => {
+  initializeApp();
+});
+
+
+// ============================================
+// INITIALIZE APP
+// ============================================
+function initializeApp() {
+
+  // Switch calculator
+  document
+    .getElementById("calculatorSelect")
+    .addEventListener("change", switchCalculator);
 
   // Buttons
-  document.getElementById("calculatePAYEButton").addEventListener("click", calculatePAYE);
-  document.getElementById("calculateSHIFButton").addEventListener("click", calculateSHIF);
-  document.getElementById("calculateVATButton").addEventListener("click", calculateVAT);
+  document
+    .getElementById("calculatePAYEButton")
+    .addEventListener("click", calculatePAYE);
 
-  // Cookie Banner
+  document
+    .getElementById("calculateSHIFButton")
+    .addEventListener("click", calculateSHIF);
+
+  document
+    .getElementById("calculateVATButton")
+    .addEventListener("click", calculateVAT);
+
+  handleCookies();
+
+  switchCalculator(); // default view
+}
+
+
+// ============================================
+// COOKIE HANDLING
+// ============================================
+function handleCookies() {
   const banner = document.getElementById("cookieBanner");
   const btn = document.getElementById("acceptCookies");
 
@@ -20,32 +47,32 @@ document.addEventListener("DOMContentLoaded", function () {
     banner.style.display = "flex";
   }
 
-  btn.addEventListener("click", function () {
+  btn.addEventListener("click", () => {
     localStorage.setItem("cookiesAccepted", "true");
     banner.style.display = "none";
   });
-
-  // Show PAYE by default
-  switchCalculator();
-});
+}
 
 
-// ===============================
-// SWITCH CALCULATOR
-// ===============================
+// ============================================
+// SWITCH CALCULATOR VIEW
+// ============================================
 function switchCalculator() {
-  const calc = document.getElementById("calculatorSelect").value;
+  const selected = document.getElementById("calculatorSelect").value;
 
   document.getElementById("payeCalculator").style.display =
-    calc === "paye" ? "block" : "none";
+    selected === "paye" ? "block" : "none";
 
   document.getElementById("shifCalculator").style.display =
-    calc === "shif" ? "block" : "none";
+    selected === "shif" ? "block" : "none";
 
   document.getElementById("vatCalculator").style.display =
-    calc === "vat" ? "block" : "none";
+    selected === "vat" ? "block" : "none";
 
-  // Clear results
+  clearResults();
+}
+
+function clearResults() {
   document.getElementById("payeResult").innerHTML = "";
   document.getElementById("shifResult").innerHTML = "";
   document.getElementById("vatResult").innerHTML = "";
@@ -56,60 +83,48 @@ function switchCalculator() {
 }
 
 
-// ===============================
+// ============================================
 // PAYE CALCULATOR
-// ===============================
+// ============================================
 function calculatePAYE() {
 
   const mode = document.getElementById("mode").value;
-  const input1 = parseFloat(document.getElementById("grossSalary").value);
-  const input2 = parseFloat(document.getElementById("grossSalary2").value);
+  const salary1 = parseFloat(document.getElementById("grossSalary").value);
+  const salary2 = parseFloat(document.getElementById("grossSalary2").value);
 
-  if (isNaN(input1) || input1 <= 0) {
+  if (isNaN(salary1) || salary1 <= 0) {
     alert("Please enter a valid salary.");
     return;
   }
 
-  let gross, paye, nssf, shif, housingLevy, net;
+  let gross1 = mode === "gross"
+    ? salary1
+    : estimateGrossFromNet(salary1);
 
-  if (mode === "gross") {
-    gross = input1;
-  } else {
-    gross = estimateGrossFromNet(input1);
-  }
+  const result1 = calculateDeductions(gross1);
 
-  ({ paye, nssf, shif, housingLevy, net } = calculateDeductions(gross));
+  displaySalaryBreakdown(gross1, result1);
 
-  displayResults(gross, paye, nssf, shif, housingLevy, net);
+  if (!isNaN(salary2) && salary2 > 0) {
 
-  // Comparison
-  if (!isNaN(input2) && input2 > 0) {
+    let gross2 = mode === "gross"
+      ? salary2
+      : estimateGrossFromNet(salary2);
 
-    let gross2;
+    const result2 = calculateDeductions(gross2);
 
-    if (mode === "gross") {
-      gross2 = input2;
-    } else {
-      gross2 = estimateGrossFromNet(input2);
-    }
-
-    const res2 = calculateDeductions(gross2);
-
-    displayComparison(net, res2.net);
-    renderComparisonChart(
-      [paye, nssf, shif, housingLevy, net],
-      [res2.paye, res2.nssf, res2.shif, res2.housingLevy, res2.net]
-    );
+    displayComparison(result1.net, result2.net);
+    renderComparisonChart(result1, result2);
 
   } else {
-    renderChart(paye, nssf, shif, housingLevy, net);
+    renderChart(result1);
   }
 }
 
 
-// ===============================
-// DEDUCTIONS LOGIC
-// ===============================
+// ============================================
+// DEDUCTION LOGIC
+// ============================================
 function calculateDeductions(gross) {
 
   // NSSF
@@ -121,8 +136,7 @@ function calculateDeductions(gross) {
   } else {
     nssf = 540 + (gross - 9000) * 0.06;
   }
-
-  if (nssf > 6480) nssf = 6480;
+  nssf = Math.min(nssf, 6480);
 
   // SHIF
   const shif = Math.max(gross * 0.0275, 300);
@@ -142,35 +156,34 @@ function calculateDeductions(gross) {
   ];
 
   let paye = 0;
-  let previousLimit = 0;
+  let prev = 0;
 
   for (let band of bands) {
-    if (taxable > previousLimit) {
-      paye +=
-        (Math.min(taxable, band.limit) - previousLimit) *
-        band.rate;
-      previousLimit = band.limit;
+    if (taxable > prev) {
+      paye += (Math.min(taxable, band.limit) - prev) * band.rate;
+      prev = band.limit;
     }
   }
 
-  // Personal relief
-  paye = Math.max(paye - 2400, 0);
+  paye = Math.max(paye - 2400, 0); // Personal relief
 
-  const net = gross - (paye + nssf + shif + housingLevy);
+  const totalDeductions = paye + nssf + shif + housingLevy;
+  const net = gross - totalDeductions;
 
   return {
     paye: Math.round(paye),
     nssf: Math.round(nssf),
     shif: Math.round(shif),
     housingLevy: Math.round(housingLevy),
+    totalDeductions: Math.round(totalDeductions),
     net: Math.round(net)
   };
 }
 
 
-// ===============================
+// ============================================
 // ESTIMATE GROSS FROM NET
-// ===============================
+// ============================================
 function estimateGrossFromNet(targetNet) {
   let guess = targetNet;
 
@@ -179,7 +192,6 @@ function estimateGrossFromNet(targetNet) {
     const diff = result.net - targetNet;
 
     if (Math.abs(diff) < 1) break;
-
     guess -= diff;
   }
 
@@ -187,41 +199,74 @@ function estimateGrossFromNet(targetNet) {
 }
 
 
-// ===============================
-// DISPLAY RESULTS
-// ===============================
-function displayResults(gross, paye, nssf, shif, housingLevy, net) {
+// ============================================
+// DISPLAY SALARY BREAKDOWN
+// ============================================
+function displaySalaryBreakdown(gross, result) {
+
+  const takeHomePercent = ((result.net / gross) * 100).toFixed(1);
+  const deductionPercent = ((result.totalDeductions / gross) * 100).toFixed(1);
+
+  const annualNet = result.net * 12;
+  const annualDeductions = result.totalDeductions * 12;
+
   document.getElementById("payeResult").innerHTML = `
-    <h3>Salary Breakdown</h3>
-    <p><strong>Gross:</strong> KES ${gross.toLocaleString()}</p>
-    <p>PAYE: KES ${paye.toLocaleString()}</p>
-    <p>NSSF: KES ${nssf.toLocaleString()}</p>
-    <p>SHIF: KES ${shif.toLocaleString()}</p>
-    <p>Housing Levy: KES ${housingLevy.toLocaleString()}</p>
-    <hr>
-    <p><strong>Net Salary:</strong> KES ${net.toLocaleString()}</p>
+    <div class="result-card">
+
+      <h3>Salary Breakdown</h3>
+
+      ${row("Gross Salary:", gross)}
+      ${row("PAYE:", result.paye)}
+      ${row("NSSF:", result.nssf)}
+      ${row("SHIF:", result.shif)}
+      ${row("Housing Levy:", result.housingLevy)}
+
+      <div class="result-row total">
+        <span>Net Salary:</span>
+        <strong>KES ${result.net.toLocaleString()}</strong>
+      </div>
+
+      ${row("Take-home %:", takeHomePercent + "%")}
+      ${row("Deductions %:", deductionPercent + "%")}
+      ${row("Annual Net Salary:", annualNet)}
+      ${row("Total Annual Deductions:", annualDeductions)}
+
+    </div>
+  `;
+}
+
+function row(label, value) {
+  if (typeof value === "number") {
+    value = "KES " + value.toLocaleString();
+  }
+  return `
+    <div class="result-row">
+      <span>${label}</span>
+      <span>${value}</span>
+    </div>
   `;
 }
 
 
-// ===============================
-// DISPLAY COMPARISON
-// ===============================
+// ============================================
+// COMPARISON DISPLAY
+// ============================================
 function displayComparison(net1, net2) {
   document.getElementById("payeResult").innerHTML += `
-    <hr>
-    <h3>Comparison</h3>
-    <p>Salary 1 Net: KES ${net1.toLocaleString()}</p>
-    <p>Salary 2 Net: KES ${net2.toLocaleString()}</p>
-    <p><strong>Difference:</strong> KES ${(net2 - net1).toLocaleString()}</p>
+    <div class="result-card" style="margin-top:15px;">
+      <h3>Comparison</h3>
+      ${row("Salary 1 Net:", net1)}
+      ${row("Salary 2 Net:", net2)}
+      ${row("Difference:", net2 - net1)}
+    </div>
   `;
 }
 
 
-// ===============================
-// SINGLE CHART
-// ===============================
-function renderChart(paye, nssf, shif, housingLevy, net) {
+// ============================================
+// CHARTS
+// ============================================
+function renderChart(result) {
 
   const ctx = document.getElementById("salaryChart").getContext("2d");
 
@@ -230,20 +275,22 @@ function renderChart(paye, nssf, shif, housingLevy, net) {
   window.salaryChart = new Chart(ctx, {
     type: "pie",
     data: {
-      labels: ["PAYE", "NSSF", "SHIF", "Housing Levy", "Net Salary"],
+      labels: ["PAYE", "NSSF", "SHIF", "Housing Levy", "Net"],
       datasets: [{
-        data: [paye, nssf, shif, housingLevy, net]
+        data: [
+          result.paye,
+          result.nssf,
+          result.shif,
+          result.housingLevy,
+          result.net
+        ]
       }]
     },
     options: { responsive: true }
   });
 }
 
-
-// ===============================
-// COMPARISON CHART
-// ===============================
-function renderComparisonChart(data1, data2) {
+function renderComparisonChart(r1, r2) {
 
   const ctx = document.getElementById("salaryChart").getContext("2d");
 
@@ -254,8 +301,14 @@ function renderComparisonChart(data1, data2) {
     data: {
       labels: ["PAYE", "NSSF", "SHIF", "Housing Levy", "Net"],
       datasets: [
-        { label: "Salary 1", data: data1 },
-        { label: "Salary 2", data: data2 }
+        {
+          label: "Salary 1",
+          data: [r1.paye, r1.nssf, r1.shif, r1.housingLevy, r1.net]
+        },
+        {
+          label: "Salary 2",
+          data: [r2.paye, r2.nssf, r2.shif, r2.housingLevy, r2.net]
+        }
       ]
     },
     options: { responsive: true }
@@ -263,42 +316,45 @@ function renderComparisonChart(data1, data2) {
 }
 
 
-// ===============================
+// ============================================
 // SHIF CALCULATOR
-// ===============================
+// ============================================
 function calculateSHIF() {
-
   const salary = parseFloat(document.getElementById("shifSalary").value);
 
   if (isNaN(salary) || salary <= 0) {
-    alert("Enter a valid salary.");
+    alert("Enter valid salary.");
     return;
   }
 
   const shif = Math.max(salary * 0.0275, 300);
 
   document.getElementById("shifResult").innerHTML =
-    `<p><strong>Monthly SHIF Contribution:</strong> KES ${Math.round(shif).toLocaleString()}</p>`;
+    `<div class="result-card">
+      <h3>SHIF Contribution</h3>
+      ${row("Monthly Contribution:", Math.round(shif))}
+    </div>`;
 }
 
 
-// ===============================
+// ============================================
 // VAT CALCULATOR
-// ===============================
+// ============================================
 function calculateVAT() {
-
   const amount = parseFloat(document.getElementById("vatAmount").value);
 
   if (isNaN(amount) || amount <= 0) {
-    alert("Enter a valid amount.");
+    alert("Enter valid amount.");
     return;
   }
 
   const vat = amount * 0.16;
   const total = amount + vat;
 
-  document.getElementById("vatResult").innerHTML = `
-    <p>VAT (16%): KES ${vat.toLocaleString()}</p>
-    <p><strong>Total Amount:</strong> KES ${total.toLocaleString()}</p>
-  `;
+  document.getElementById("vatResult").innerHTML =
+    `<div class="result-card">
+      <h3>VAT Calculation</h3>
+      ${row("VAT (16%):", vat)}
+      ${row("Total Amount:", total)}
+    </div>`;
 }
